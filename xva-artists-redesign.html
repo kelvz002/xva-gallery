@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f5f1ea">
+  <meta name="description" content="Artists - XVA Gallery">
+  <title>Artists - XVA Gallery</title>
+  <style>
+    :root {
+      --paper:#f5f1ea;
+      --white:#fbfaf6;
+      --ink:#163f4b;
+      --text:#171919;
+      --muted:#6f726e;
+      --line:#d7d1c7;
+      --soft:#ece6dc;
+      --night:#171918;
+      --max:1240px;
+      --gutter:clamp(20px,3vw,44px);
+      --serif:"Prata",Georgia,"Times New Roman",serif;
+      --sans:Arial,Helvetica,sans-serif;
+      --ease:cubic-bezier(.2,.7,.2,1);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;min-width:0;overflow-x:hidden;background:var(--paper);color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}
+    img{display:block;max-width:100%}
+    button,input{font:inherit}
+    button{color:inherit}
+    ::selection{background:var(--ink);color:#fff}
+    :focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+    .shell{width:min(var(--max),calc(100% - (var(--gutter) * 2)));margin-inline:auto}
+    .kicker,.eyebrow,.nav-link,.footer-label{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+    .kicker{color:var(--ink)}
+    .eyebrow,.footer-label{color:var(--muted)}
+    .serif{font-family:var(--serif);font-weight:400;letter-spacing:-.025em;line-height:1.03}
+
+    /* Header */
+    .site-header{position:sticky;top:0;z-index:50;background:rgba(245,241,234,.94);border-bottom:1px solid rgba(215,209,199,.9);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+    .header-inner{min-height:78px;display:grid;grid-template-columns:170px 1fr 170px;align-items:center;gap:24px}
+    .brand,.footer-brand{display:inline-flex;align-items:center;width:fit-content;line-height:0}
+    .brand img,.footer-brand img{width:66px;height:45px;object-fit:contain}
+    .desktop-nav{display:flex;justify-content:center;align-items:center;gap:clamp(14px,2vw,28px)}
+    .nav-link{position:relative;padding:10px 0 8px;white-space:nowrap}
+    .nav-link:after{content:"";position:absolute;right:100%;bottom:0;left:0;height:1px;background:var(--ink);transition:right .25s ease}
+    .nav-link:hover:after,.nav-link[aria-current="page"]:after{right:0}
+    .header-actions{display:flex;justify-content:flex-end;align-items:center;gap:14px}
+    .language{display:inline-flex;align-items:center;justify-content:center;min-width:28px;min-height:40px;color:var(--muted);font-size:10px;font-weight:700;letter-spacing:.12em}
+    .language.active,.language:hover{color:var(--ink)}
+    .menu-btn{display:none;align-items:center;gap:10px;justify-self:end;border:0;padding:10px 0 10px 10px;background:transparent;cursor:pointer;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+    .menu-icon,.menu-icon:before,.menu-icon:after{display:block;width:18px;height:1px;background:currentColor;transition:transform .25s ease,top .25s ease}
+    .menu-icon{position:relative}
+    .menu-icon:before,.menu-icon:after{content:"";position:absolute;left:0}
+    .menu-icon:before{top:-6px}.menu-icon:after{top:6px}
+    .menu-btn[aria-expanded="true"] .menu-icon{background:transparent}
+    .menu-btn[aria-expanded="true"] .menu-icon:before{top:0;transform:rotate(45deg)}
+    .menu-btn[aria-expanded="true"] .menu-icon:after{top:0;transform:rotate(-45deg)}
+    .mobile-menu{display:none;border-top:1px solid var(--line);padding:22px var(--gutter) 26px;background:var(--paper)}
+    .mobile-menu.is-open{display:block}
+    .mobile-nav{display:grid;gap:15px}
+    .mobile-nav .nav-link{width:fit-content;padding:4px 0}
+    .mobile-languages{display:flex;gap:8px;margin-top:20px;padding-top:16px;border-top:1px solid var(--line)}
+
+    /* Heading and collage */
+    .artists-hero{padding:clamp(58px,8vw,112px) 0 clamp(56px,7vw,92px);border-bottom:1px solid var(--line)}
+    .hero-grid{display:grid;grid-template-columns:minmax(0,.92fr) minmax(360px,1.08fr);align-items:center;gap:clamp(42px,7vw,110px)}
+    .hero-copy{min-width:0}
+    .hero-copy h1{margin:18px 0 0;color:var(--ink);font-size:clamp(64px,8.6vw,124px)}
+    .hero-rule{display:flex;align-items:center;gap:16px;max-width:430px;margin-top:clamp(48px,8vw,96px);padding-top:16px;border-top:1px solid var(--line)}
+    .hero-rule:before{content:"";flex:0 0 30px;height:1px;background:var(--ink)}
+    .hero-location{color:var(--muted);font-size:12px}
+    .hero-collage{position:relative;display:grid;grid-template-columns:1.16fr .84fr;grid-template-rows:repeat(2,minmax(0,1fr));gap:12px;min-height:420px;aspect-ratio:1.18/1}
+    .hero-collage>div{min-width:0;overflow:hidden;border:1px solid rgba(0,0,0,.08);background:var(--soft)}
+    .hero-collage>div:first-child{grid-row:1/3}
+    .hero-collage img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease),filter .4s ease}
+    .hero-collage>div:hover img{transform:scale(1.035);filter:saturate(1.05)}
+    .hero-collage:after{content:"XVA / DUBAI";position:absolute;right:12px;bottom:12px;padding:8px 10px;background:rgba(251,250,246,.9);color:var(--ink);font-size:9px;font-weight:700;letter-spacing:.14em}
+
+    /* Directory */
+    .artists-section{padding:clamp(64px,8vw,112px) 0 clamp(76px,10vw,132px)}
+    .directory-bar{display:flex;justify-content:space-between;align-items:center;gap:24px;margin-bottom:32px;padding-top:17px;border-top:1px solid var(--line)}
+    .artist-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(32px,4vw,52px) 22px}
+    .artist-card{display:flex;min-width:0;flex-direction:column}
+    .artist-media{position:relative;order:2;height:0;max-height:0;margin-top:0;overflow:hidden;border:0 solid rgba(0,0,0,.08);background:var(--soft);opacity:0;pointer-events:none;transform:translateY(-8px);transition:height .45s var(--ease),max-height .45s var(--ease),margin-top .45s var(--ease),opacity .28s ease,transform .45s var(--ease),border-width .25s ease}
+    .artist-media:after{content:"↗";position:absolute;right:12px;bottom:12px;display:grid;width:34px;height:34px;place-items:center;background:rgba(251,250,246,.92);color:var(--ink);font-size:17px;opacity:0;transform:translateY(5px);transition:opacity .25s ease,transform .25s ease}
+    .artist-media img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease),filter .4s ease}
+    .artist-card:hover .artist-media,.artist-card:focus-within .artist-media{height:clamp(220px,26vw,340px);max-height:420px;margin-top:12px;border-width:1px;opacity:1;pointer-events:auto;transform:none}
+    .artist-card:hover .artist-media img,.artist-card:focus-within .artist-media img{transform:scale(1.035);filter:saturate(1.04)}
+    .artist-card:hover .artist-media:after,.artist-card:focus-within .artist-media:after{opacity:1;transform:none}
+    .artist-copy{display:flex;order:1;position:relative;z-index:2;align-items:baseline;justify-content:space-between;gap:14px;min-height:62px;padding:14px 2px 12px;border-bottom:1px solid var(--line)}
+    .artist-name{color:var(--ink);font-family:var(--serif);font-size:clamp(20px,2.1vw,27px);line-height:1.12;letter-spacing:-.02em}
+    .artist-name:hover{color:var(--text)}
+    .artist-arrow{flex:0 0 auto;color:var(--muted);font-size:17px;transition:transform .25s ease,color .25s ease}
+    .artist-card:hover .artist-arrow,.artist-card:focus-within .artist-arrow{color:var(--ink);transform:translate(3px,-2px)}
+
+    /* Artist hover artwork: inspired by the reference gallery's full-screen preview */
+    .artist-hover-bg{position:fixed;inset:0;z-index:40;display:grid;place-items:center;visibility:hidden;overflow:hidden;background:rgba(245,241,234,.2);opacity:0;pointer-events:none;transition:opacity .28s ease,visibility 0s linear .28s;backface-visibility:hidden}
+    .artist-hover-bg.is-visible{visibility:visible;opacity:1;transition:opacity .28s ease}
+    .artist-hover-bg:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(245,241,234,.12),rgba(245,241,234,.02) 45%,rgba(245,241,234,.15));mix-blend-mode:screen}
+    .artist-hover-bg-image{width:auto;height:auto;max-width:min(88vw,1200px);max-height:min(78vh,760px);padding:0;object-fit:contain;object-position:center;opacity:1;transform:scale(.985);transition:opacity .28s ease,transform .7s var(--ease);filter:saturate(.96)}
+    .artist-hover-bg-image{opacity:0}
+    .artist-hover-bg-image.is-loaded{opacity:1;transform:scale(1)}
+    main,.newsletter,.site-footer{position:relative;z-index:auto}
+    .artist-grid{position:relative;z-index:45;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0}
+    .artist-card{position:relative;display:flex;min-width:0;min-height:72px;align-items:center;justify-content:center}
+    .artist-media{position:absolute;inset:0;z-index:-1;width:100%;height:100%;overflow:hidden;border:0;background:var(--soft);opacity:0;visibility:hidden;pointer-events:none;transform:scale(.985);transition:opacity .28s ease,transform .45s var(--ease),visibility 0s linear .28s}
+    .artist-media img{width:100%;height:100%;object-fit:cover}
+    .artist-media:after{display:none}
+    .artist-card:hover .artist-media,.artist-card:focus-within .artist-media{height:100%;max-height:none;margin-top:0;border-width:0;opacity:0;visibility:hidden;pointer-events:none;transform:scale(.985)}
+    .artist-copy{display:flex;position:relative;z-index:2;align-items:center;justify-content:center;gap:14px;width:100%;min-height:72px;padding:10px 5%;text-align:center;border-bottom:0}
+    .artist-copy{transition:opacity .22s ease,visibility 0s linear .22s,transform .22s var(--ease)}
+    .artist-grid.is-previewing .artist-card:not(.is-preview) .artist-copy{opacity:0;visibility:hidden;pointer-events:none;transform:translateY(5px)}
+    .artist-grid.is-previewing .artist-card.is-preview .artist-copy{opacity:1;visibility:visible;pointer-events:auto;transform:none;transition-delay:0s}
+    .artist-name{position:relative;z-index:2;color:var(--ink);font-family:var(--serif);font-size:clamp(20px,2.1vw,27px);line-height:1.12;letter-spacing:-.02em}
+    .artist-name:hover{color:var(--text)}
+    .artist-arrow{display:none}
+    .artist-card:hover .artist-name,.artist-card:focus-within .artist-name{color:var(--text);text-shadow:0 1px 1px rgba(245,241,234,.8),0 0 18px rgba(245,241,234,.72)}
+
+    /* Newsletter and footer */
+    .newsletter{padding:clamp(60px,7vw,90px) 0 clamp(54px,6vw,76px);background:var(--night);color:#f7f4ee}
+    .newsletter-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);align-items:end;gap:clamp(36px,7vw,104px)}
+    .newsletter .kicker{color:#c5d1cf}
+    .newsletter h2{max-width:620px;margin:12px 0 0;color:#fff;font-size:clamp(36px,4.5vw,66px)}
+    .newsletter-form{display:grid;grid-template-columns:1fr auto;align-items:end;gap:18px;margin:0;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.4)}
+    .newsletter-field{min-width:0}
+    .newsletter-field label{display:block;margin-bottom:4px;color:#8e9390;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+    .newsletter-form input{width:100%;min-height:42px;border:0;outline:0;background:transparent;color:#fff;font-size:15px}
+    .newsletter-form input::placeholder{color:#8e9390}
+    .newsletter-form input:focus-visible{outline:1px solid #fff;outline-offset:5px}
+    .newsletter-form button{min-height:42px;border:0;padding:8px 0 8px 14px;background:transparent;color:#fff;cursor:pointer;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap}
+    .newsletter-form button span{margin-left:10px;font-size:17px}
+    .newsletter-form button:hover{color:#c5d1cf}
+    .site-footer{padding:34px 0 46px;border-top:1px solid rgba(255,255,255,.1);background:var(--night);color:#d7d8d1}
+    .footer-brand-row{display:flex;justify-content:space-between;align-items:end;gap:30px;padding-bottom:30px;border-bottom:1px solid rgba(255,255,255,.12)}
+    .footer-brand img{filter:brightness(0) invert(1)}
+    .footer-socials{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:20px}
+    .footer-socials a,.footer-contact a{color:#f7f4ee;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+    .footer-socials a:hover,.footer-contact a:hover{color:#c5d1cf}
+    .footer-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;padding-top:30px}
+    .footer-contact{min-width:0}
+    .footer-contact p{margin:9px 0 0;color:#d7d8d1;font-size:13px;line-height:1.65}
+    .footer-contact p a{display:inline;font-size:inherit;font-weight:400;letter-spacing:normal;text-transform:none}
+    .footer-bottom{display:flex;justify-content:space-between;gap:20px;margin-top:32px;padding-top:16px;border-top:1px solid rgba(255,255,255,.1);color:#8e928f;font-size:11px}
+
+    @media(max-width:1080px){
+      .header-inner{grid-template-columns:1fr auto;min-height:72px}
+      .desktop-nav,.header-actions{display:none}
+      .menu-btn{display:inline-flex}
+      .hero-grid{gap:48px}
+    }
+    @media(max-width:900px){
+      .hero-grid{grid-template-columns:1fr}
+      .hero-copy h1{font-size:clamp(64px,14vw,108px)}
+      .hero-rule{margin-top:46px}
+      .hero-collage{width:min(100%,680px);min-height:0}
+      .artist-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .newsletter-grid{grid-template-columns:1fr;gap:32px}
+      .footer-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
+    @media(max-width:620px){
+      :root{--gutter:20px}
+      .header-inner{min-height:68px}
+      .artists-hero{padding-top:50px;padding-bottom:58px}
+      .hero-copy h1{margin-top:14px;font-size:clamp(58px,18vw,82px)}
+      .hero-rule{margin-top:40px}
+      .hero-collage{grid-template-columns:1.12fr .88fr;gap:8px;aspect-ratio:1.1/1}
+      .hero-collage:after{right:8px;bottom:8px;padding:7px 8px;font-size:8px}
+      .artists-section{padding-top:62px;padding-bottom:76px}
+      .directory-bar{align-items:flex-start;flex-direction:column;gap:7px;margin-bottom:26px}
+      .artist-grid{grid-template-columns:1fr;gap:34px}
+      .artist-copy{min-height:58px}
+      .artist-name{font-size:23px}
+      .newsletter-form{grid-template-columns:1fr;gap:6px;padding-bottom:12px}
+      .newsletter-form button{justify-self:start;padding-left:0}
+      .footer-brand-row{align-items:flex-start;flex-direction:column;gap:24px}
+      .footer-socials{justify-content:flex-start;gap:14px 20px}
+      .footer-grid{grid-template-columns:1fr;gap:24px}
+      .footer-bottom{flex-direction:column;gap:4px}
+    }
+    @media(max-width:620px){
+      .artist-hover-bg{display:none}
+      .artist-card{align-items:stretch;flex-direction:column;min-height:0}
+      .artist-copy{min-height:58px}
+      .artist-card:hover .artist-media{height:0;max-height:0;margin-top:0;border-width:0;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-6px)}
+      .artist-media{position:relative;inset:auto;width:100%;height:0;max-height:0;margin-top:0;border:0;visibility:hidden;opacity:0;transform:translateY(-6px);transition:height .35s var(--ease),max-height .35s var(--ease),margin-top .35s var(--ease),opacity .25s ease,transform .35s var(--ease),visibility 0s linear .35s}
+      .artist-card:focus-within .artist-media{height:clamp(220px,74vw,320px);max-height:340px;margin-top:8px;border-width:1px;visibility:visible;opacity:1;pointer-events:auto;transform:none;transition-delay:0s}
+    }
+    @media(prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}
+      *,*:before,*:after{transition-duration:.01ms!important;animation-duration:.01ms!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="artist-hover-bg" id="artistHoverBg" aria-hidden="true"><img class="artist-hover-bg-image" alt=""></div>
+  <header class="site-header" id="top">
+    <div class="shell header-inner">
+      <a class="brand" href="https://www.xvagallery.com/" aria-label="XVA Gallery home">
+        <img src="https://www.xvagallery.com/wp-content/uploads/2020/07/logo-mobile-xva-gallery.svg" width="66" height="45" alt="XVA Gallery">
+      </a>
+      <nav class="desktop-nav" aria-label="Menu">
+        <a class="nav-link" href="https://www.xvagallery.com/">Home</a>
+        <a class="nav-link" href="https://www.xvagallery.com/artists-list/" aria-current="page">Artists</a>
+        <a class="nav-link" href="https://www.xvagallery.com/exhibitions-new/">Exhibitions</a>
+        <a class="nav-link" href="https://www.xvagallery.com/art-consultancy-and-advisory-services/">Art Consultancy</a>
+        <a class="nav-link" href="https://www.xvagallery.com/press-release/">Press</a>
+        <a class="nav-link" href="https://www.xvagallery.com/contact/">Contact</a>
+        <a class="nav-link" href="https://www.xvagallery.com/hotel-cafe-2/">Hotel &amp; Café</a>
+        <a class="nav-link" href="https://xvashop.com/" target="_blank" rel="noopener">XVA Shop</a>
+      </nav>
+      <div class="header-actions" aria-label="Language selection">
+        <a class="language" href="#" data-language="ar">AR</a>
+        <a class="language active" href="#" data-language="en" aria-current="true">EN</a>
+      </div>
+      <button class="menu-btn" id="menuToggle" type="button" aria-expanded="false" aria-controls="mobileMenu">
+        <span>Menu</span><span class="menu-icon" aria-hidden="true"></span>
+      </button>
+    </div>
+    <div class="mobile-menu" id="mobileMenu" hidden>
+      <nav class="mobile-nav" aria-label="Mobile menu">
+        <a class="nav-link" href="https://www.xvagallery.com/">Home</a>
+        <a class="nav-link" href="https://www.xvagallery.com/artists-list/" aria-current="page">Artists</a>
+        <a class="nav-link" href="https://www.xvagallery.com/exhibitions-new/">Exhibitions</a>
+        <a class="nav-link" href="https://www.xvagallery.com/art-consultancy-and-advisory-services/">Art Consultancy</a>
+        <a class="nav-link" href="https://www.xvagallery.com/press-release/">Press</a>
+        <a class="nav-link" href="https://www.xvagallery.com/contact/">Contact</a>
+        <a class="nav-link" href="https://www.xvagallery.com/hotel-cafe-2/">Hotel &amp; Café</a>
+        <a class="nav-link" href="https://xvashop.com/" target="_blank" rel="noopener">XVA Shop</a>
+      </nav>
+      <div class="mobile-languages" aria-label="Language selection">
+        <a class="language" href="#" data-language="ar">AR</a>
+        <a class="language active" href="#" data-language="en" aria-current="true">EN</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="artists-hero" aria-labelledby="artists-heading">
+      <div class="shell hero-grid">
+        <div class="hero-copy">
+          <span class="kicker">XVA Gallery</span>
+          <h1 class="serif" id="artists-heading">Artists</h1>
+          <div class="hero-rule"><span class="hero-location">Al Fahidi Neighborhood, Bur Dubai</span></div>
+        </div>
+        <div class="hero-collage" aria-hidden="true">
+          <div><img src="https://www.xvagallery.com/wp-content/uploads/2020/08/AM-2-image-681x1024.jpg" alt="" fetchpriority="high"></div>
+          <div><img src="https://www.xvagallery.com/wp-content/uploads/2025/12/AB-62-image.cover-photoDetail-of-WTC-2011-American-Cherry-Glass-Wax-Encapsulated-pages-of-Leo-Tolstoys-War-Peace-63cm-x-143cm-1-670x1024.jpg" alt="" fetchpriority="high"></div>
+          <div><img src="https://www.xvagallery.com/wp-content/uploads/2025/12/AP8-imageChaos-Theorem-2020-Wood-Metal-30cm-x-30cm-x-18-cm-1024x731.jpg" alt="" fetchpriority="high"></div>
+        </div>
+      </div>
+    </section>
+    <section class="artists-section" aria-label="Artists list">
+      <div class="shell">
+        <div class="directory-bar"><span class="kicker">Artists</span><span class="eyebrow">XVA Gallery</span></div>
+        <div class="artist-grid" id="artistGrid" role="list"></div>
+      </div>
+    </section>
+  </main>
+
+  <section class="newsletter" id="newsletter" aria-labelledby="newsletter-title">
+    <div class="shell newsletter-grid">
+      <div><span class="kicker">XVA Journal</span><h2 class="serif" id="newsletter-title">Hear about the latest news and events</h2></div>
+      <form class="newsletter-form" id="newsletterForm">
+        <div class="newsletter-field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" placeholder="Email" required></div>
+        <button type="submit">Join our Newsletter <span aria-hidden="true">→</span></button>
+      </form>
+    </div>
+  </section>
+
+  <footer class="site-footer" id="footer">
+    <div class="shell">
+      <div class="footer-brand-row">
+        <a class="footer-brand" href="https://www.xvagallery.com/" aria-label="XVA Gallery home"><img src="https://www.xvagallery.com/wp-content/uploads/2020/07/logo-mobile-xva-gallery.svg" width="66" height="45" alt="XVA Gallery"></a>
+        <div class="footer-socials" aria-label="Social media">
+          <a href="https://www.instagram.com/xvagallery/" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://www.facebook.com/xvagallery/" target="_blank" rel="noopener">Facebook-f</a>
+          <a href="http://twitter.com/XVAGALLERY" target="_blank" rel="noopener">Twitter</a>
+        </div>
+      </div>
+      <div class="footer-grid">
+        <div class="footer-contact"><span class="footer-label">Location</span><p>Al Fahidi Neighborhood, Bur Dubai<br>P.O. Box 37304<br>Dubai, UAE</p></div>
+        <div class="footer-contact"><span class="footer-label">OPEN DAILY</span><p>7 days a week: 10am – 6pm</p></div>
+        <div class="footer-contact"><span class="footer-label">Contact</span><p><span>Email:</span> <a href="mailto:xva@xvagallery.com">xva@xvagallery.com</a><br><span>Phone:</span> +9714 3535383<br><span>Fax:</span> +9714 3535988</p></div>
+        <div class="footer-contact"><span class="footer-label">BY APPOINTMENT</span><p>Outside of working hours</p></div>
+      </div>
+      <div class="footer-bottom"><span>XVA Gallery</span><span>Al Fahidi Neighborhood, Bur Dubai</span></div>
+    </div>
+  </footer>
+
+  <script>
+    (function(){
+      var artists = [
+        ["Akim Monet","https://www.xvagallery.com/artist/akim-monet/","https://www.xvagallery.com/wp-content/uploads/2020/08/AM-2-image-681x1024.jpg"],
+        ["Al Braithwaite","https://www.xvagallery.com/artist/al-braithwaite/","https://www.xvagallery.com/wp-content/uploads/2025/12/AB-62-image.cover-photoDetail-of-WTC-2011-American-Cherry-Glass-Wax-Encapsulated-pages-of-Leo-Tolstoys-War-Peace-63cm-x-143cm-1-670x1024.jpg"],
+        ["Alejandra Palos","https://www.xvagallery.com/artist/alejandra-palos/","https://www.xvagallery.com/wp-content/uploads/2025/12/AP8-imageChaos-Theorem-2020-Wood-Metal-30cm-x-30cm-x-18-cm-1024x731.jpg"],
+        ["Alikhaan Abdollahi","https://www.xvagallery.com/artist/alikhaan-abdollahi/","https://www.xvagallery.com/wp-content/uploads/2025/12/AA-032-imageUntitled-2012-Papier-Mache-30-x-30-x-16-cm-768x858.jpg"],
+        ["Arezu","https://www.xvagallery.com/artist/arezu/","https://www.xvagallery.com/wp-content/uploads/2025/12/AZ-69-imageBlack-Crow-2-2011-Rag-on-Hahnemuhle-paper-100-x-100-cm-Edition-2-3-2AP--768x768.jpg"],
+        ["Azad Nanakeli","https://www.xvagallery.com/artist/azad-nanakeli/","https://www.xvagallery.com/wp-content/uploads/2025/12/AZ-017-imageAwaz-2015-Video-Still-Lambda-print-on-paper-60-x-50-cm-1-10-768x1024.jpg"],
+        ["Barbara Wildenboer","https://www.xvagallery.com/artist/barbara-wildenboer/","https://www.xvagallery.com/wp-content/uploads/2025/12/BBW-10-imageChaos-Theory-2020-Altered-Book-768x446.jpg"],
+        ["Behdad Lahooti","https://www.xvagallery.com/artist/behdad-lahooti/","https://www.xvagallery.com/wp-content/uploads/2025/12/BL-048-imageUntitled-2009-Bronze-25-x-12-x-12-cm-737x1024.jpg"],
+        ["Charlie Koolhaas","https://www.xvagallery.com/artist/charlie-koolhaas/","https://www.xvagallery.com/wp-content/uploads/2025/12/CK05-imageUntitled-City-Lust-Series-UV-print-on-dibond-28-x-40-cm-670x1024.jpg"],
+        ["Colleen Quigley","https://www.xvagallery.com/artist/colleen-quigley/","https://www.xvagallery.com/wp-content/uploads/2025/12/CQ-120-imageSpring-2024-Heat-formed-laser-cut-cast-acrylic-99-x-89-x-28cm-768x1024.png"],
+        ["Debjani Bhardwaj","https://www.xvagallery.com/artist/debjani-bhardwaj/","https://www.xvagallery.com/wp-content/uploads/2025/12/DB-058-imageHot-Water-Bottle-Fiber-glass-enamel-paint-47-x-16-x-13cm-768x1023.png"],
+        ["Elizabeth Dorazio","https://www.xvagallery.com/artist/elizabeth-dorazio/","https://www.xvagallery.com/wp-content/uploads/2025/12/ED-005-imageUntitled-from-the-On-Nature-series-2019-Drawing-and-collage-on-paper-161-x-158-cm-768x768.jpg"],
+        ["Halim Al Karim","https://www.xvagallery.com/artist/halim-al-karim/","https://www.xvagallery.com/wp-content/uploads/2026/02/Halim-Al-karim-stands-next-to-his-custom-built-large-format-camera.2013-759x1024.jpg"],
+        ["Halona Hilbertz","https://www.xvagallery.com/artist/halona-hilbertz/","https://www.xvagallery.com/wp-content/uploads/2025/12/HHZ-049-imageInsect-5-2018-Fabric-polymer-clay-laminated-butterfly-wings-glass-metal-acrylic-polyester-stuffing-36-x-13-x-15-cm.jpg"],
+        ["Huma Shoaib","https://www.xvagallery.com/artist/huma-shoaib/","https://www.xvagallery.com/wp-content/uploads/2025/12/HMS-015-imageconfabulations-1-2021-paper-cut-drawing-60x60cm.jpg"],
+        ["Hussein Al-Mohasen","https://www.xvagallery.com/artist/hussein-al-mohasen/","https://www.xvagallery.com/wp-content/uploads/2025/12/HAM-72-imageThe-Color-Tank-2012-Graffiti-on-wood-101-x-210-cm.jpg"],
+        ["Imran Channa","https://www.xvagallery.com/artist/imran-channa/","https://www.xvagallery.com/wp-content/uploads/2025/12/IC-11-imageUntitled-11-2011-Certificate-of-Authenticity-Graphite-on-paper-71-x-109-cm-768x536.jpg"],
+        ["Jakob Roepke","https://www.xvagallery.com/artist/jakob-roepke/","https://www.xvagallery.com/wp-content/uploads/2020/10/Jakob-Roepke-Coll-Nr-922-2009-min.jpg"],
+        ["Jonathan Gent","https://www.xvagallery.com/artist/jonathan-gent/","https://www.xvagallery.com/wp-content/uploads/2025/12/JG-31-image-cover-photoOld-Boat-on-Creek-2013-Mixed-media-varnish-on-wood-15-x-20-cm.jpg"],
+        ["Katia Al Tal","https://www.xvagallery.com/artist/katia-al-tal/","https://www.xvagallery.com/wp-content/uploads/2025/12/KATD-009-imageAzraq-Tea-Cup-and-Saucer-2013-Ceramic-stone-wear-Per-Pair-768x513.jpg"],
+        ["Mahmoud Hamadani","https://www.xvagallery.com/artist/mahmoud-hamadani/","https://www.xvagallery.com/wp-content/uploads/2025/12/MH-142-imageFibonacci-Cubes-2018-Powder-coated-steel-768x576.jpg"],
+        ["Mohammad Ali Talpur","https://www.xvagallery.com/artist/mohammad-ali-talpur/","https://www.xvagallery.com/wp-content/uploads/2025/12/MAT-7-imageLeeka-2014-Signed-dated-Ink-on-paper-32-x-24-cm-768x991.jpg"],
+        ["Mona Saudi","https://www.xvagallery.com/artist/mona-saudi/","https://www.xvagallery.com/wp-content/uploads/2025/12/MNS-010-imageHommage-a-Saint-John-Perse-2007-Signed-dated-Silk-Screen-Print-49-x-34-cm-33-77-710x1024.jpg"],
+        ["Morteza Zahedi","https://www.xvagallery.com/artist/morteza-zahedi/","https://www.xvagallery.com/wp-content/uploads/2025/12/MZ-145-imageUntitled-3-2013-Woolen-157-x-90-x-52-cm-768x1024.jpg"],
+        ["Morvarid Mohammed","https://www.xvagallery.com/artist/morvarid-mohammed/","https://www.xvagallery.com/wp-content/uploads/2025/12/MMO-003-image-cover-phoFlowers-of-Dhahran-2023-Oil-on-Canvas-90-x-60-cm-768x508.jpg"],
+        ["Moussa Tiba","https://www.xvagallery.com/artist/moussa-tiba/","https://www.xvagallery.com/wp-content/uploads/2025/12/MT-020-image-cover-phoCosmos-1993-yes-Acrylic-on-canvas-150-x-122-cm-768x720.jpg"],
+        ["Mukesh Shah","https://www.xvagallery.com/artist/mukesh-shah/","https://www.xvagallery.com/wp-content/uploads/2025/12/MS-086-imagePlaylist-2019-71-x-50-cm-PU-paint-on-aluminium-panel-Edition-of-10-plus-2-artists-proofs-768x994.jpg"],
+        ["Naqsh Raj","https://www.xvagallery.com/artist/naqsh-raj/","https://www.xvagallery.com/wp-content/uploads/2025/12/1-imageOil-on-Canvas-2010-Frame-213-cm-X-152.5-cm.jpg"],
+        ["Nasr Warour","https://www.xvagallery.com/artist/nasr-warour/","https://www.xvagallery.com/wp-content/uploads/2025/12/NW32-image-COVER-PHOUntitled-Coral-and-wood-45-x-18-x-7-cm-768x962.png"],
+        ["Naz Shahrokh","https://www.xvagallery.com/artist/naz-shahrokh/","https://www.xvagallery.com/wp-content/uploads/2025/12/NS-004-image-cover-phoJarrive-G-from-a-series-of-7-2014-Signed-and-dated-on-reverse-Digital-C-print-color-drawing-media-and-ink-10.5-cm-x-10.5-cm-Framed-30-x-40-cm-768x764.jpg"],
+        ["Nelda Gilliam","https://www.xvagallery.com/artist/nelda-gilliam/","https://www.xvagallery.com/wp-content/uploads/2025/12/NG-13-image-cover-photoUntitled-2007-Signed-and-dated-by-artist-Mixed-media-on-canvas-135-x-165-cm-768x908.jpg"],
+        ["Pom Mullan","https://www.xvagallery.com/artist/pom-mullan/","https://www.xvagallery.com/wp-content/uploads/2025/12/POM-3-imageUntitled.jpg"],
+        ["Raghd Coussa","https://www.xvagallery.com/artist/raghd-coussa-2/","https://www.xvagallery.com/wp-content/uploads/2025/12/RC-10-imageMask-II-2021-Oil-stick-and-pastel-on-paper-35.5-x-27.8-cm-.png"],
+        ["Richard Ketley","https://www.xvagallery.com/artist/richard-ketley/","https://www.xvagallery.com/wp-content/uploads/2025/12/RK-071-imageThe-way-it-was.-diptych-n-2020-Oil-on-plywood-31-x-29-x-0.25-cm-768x900.jpg"],
+        ["Saba Masoumian","https://www.xvagallery.com/artist/saba-masoumian/","https://www.xvagallery.com/wp-content/uploads/2025/12/SM-6-imageUntitled-2014-Mixed-media-on-transparent-paper-23-x-16-cm-768x512.jpg"],
+        ["Sarvenaz Farsian","https://www.xvagallery.com/artist/sarvenaz-farsian/","https://www.xvagallery.com/wp-content/uploads/2025/12/SAF-41-image-731x1024.jpg"],
+        ["Shahram Karimi","https://www.xvagallery.com/artist/shahram-karimi/","https://www.xvagallery.com/wp-content/uploads/2025/12/SKA014-imageFamilie-2022-Mixed-Media-on-Fabric-166-x-98-cm-615x1024.jpg"],
+        ["Simeen Farhat","https://www.xvagallery.com/artist/simeen-farhat/","https://www.xvagallery.com/wp-content/uploads/2025/12/21304463932_ca2270d880_b.jpg"],
+        ["Tor Seidel","https://www.xvagallery.com/artist/tor-seidel/","https://www.xvagallery.com/wp-content/uploads/2025/12/TS-041-imagePink-on-Yellow-Hahnemuhle-Fine-Art-Baryta-2025-Frame-Glass-69-x-78-cm-other-sizes-on-request-2-7-768x859.jpg"],
+        ["Yazid Oulab","https://www.xvagallery.com/artist/yazid-oulab/","https://www.xvagallery.com/wp-content/uploads/2025/12/06baf8b4-e22f-46d2-85d5-06c6f24d59d3-819x1024-1-768x960.jpeg"],
+        ["Yoshihiko Tsutsumi","https://www.xvagallery.com/artist/yoshihiko-tsutsumi/","https://www.xvagallery.com/wp-content/uploads/2025/12/YT-57-imageSpecimen-of-imagination-2023-768x960.jpg"]
+      ];
+      var grid=document.getElementById("artistGrid");
+      grid.innerHTML=artists.map(function(artist,index){
+        return '<article class="artist-card" role="listitem"><div class="artist-copy"><a class="artist-name" href="'+artist[1]+'">'+artist[0]+'</a><span class="artist-arrow" aria-hidden="true">→</span></div><a class="artist-media" href="'+artist[1]+'"><img src="'+artist[2]+'" alt="'+artist[0]+'" loading="'+(index<3?'eager':'lazy')+'" decoding="async"></a></article>';
+      }).join("");
+
+      var previewBg=document.getElementById("artistHoverBg");
+      var previewImage=previewBg.querySelector(".artist-hover-bg-image");
+      var activeCard=null;
+      var previewToken=0;
+      function showArtistPreview(card){
+        if(!card || !previewBg || !previewImage)return;
+        var sourceImage=card.querySelector(".artist-media img");
+        var nameLink=card.querySelector(".artist-name");
+        var source=sourceImage && (sourceImage.currentSrc || sourceImage.src || sourceImage.getAttribute("src"));
+        if(!source)return;
+        if(activeCard && activeCard!==card)activeCard.classList.remove("is-preview");
+        activeCard=card;
+        card.classList.add("is-preview");
+        grid.classList.add("is-previewing");
+        previewImage.alt=nameLink ? nameLink.textContent.trim() : "";
+        previewImage.classList.remove("is-loaded");
+        previewBg.classList.add("is-visible");
+        document.body.classList.add("artist-preview-active");
+        var request=++previewToken;
+        var loader=new Image();
+        loader.onload=function(){
+          if(request!==previewToken || activeCard!==card)return;
+          previewImage.src=source;
+          previewImage.classList.add("is-loaded");
+        };
+        loader.onerror=function(){
+          if(request===previewToken){
+            previewImage.src=source;
+            previewImage.classList.add("is-loaded");
+          }
+        };
+        loader.src=source;
+      }
+      function hideArtistPreview(card){
+        if(activeCard!==card)return;
+        activeCard=null;
+        previewToken++;
+        card.classList.remove("is-preview");
+        grid.classList.remove("is-previewing");
+        previewBg.classList.remove("is-visible");
+        document.body.classList.remove("artist-preview-active");
+      }
+      function cardForTarget(target){
+        var card=target && target.closest ? target.closest(".artist-card") : null;
+        return card && grid.contains(card) ? card : null;
+      }
+      grid.addEventListener("pointerover",function(event){
+        if(event.pointerType==="touch")return;
+        var card=cardForTarget(event.target);
+        if(!card || (event.relatedTarget && card.contains(event.relatedTarget)))return;
+        showArtistPreview(card);
+      });
+      grid.addEventListener("pointerout",function(event){
+        if(event.pointerType==="touch")return;
+        var card=cardForTarget(event.target);
+        if(!card || (event.relatedTarget && card.contains(event.relatedTarget)))return;
+        hideArtistPreview(card);
+      });
+      grid.addEventListener("focusin",function(event){
+        var card=cardForTarget(event.target);
+        if(card)showArtistPreview(card);
+      });
+      grid.addEventListener("focusout",function(event){
+        var card=cardForTarget(event.target);
+        if(!card || (event.relatedTarget && card.contains(event.relatedTarget)))return;
+        hideArtistPreview(card);
+      });
+      document.addEventListener("keydown",function(event){
+        if(event.key==="Escape" && activeCard)hideArtistPreview(activeCard);
+      });
+
+      var menuToggle=document.getElementById("menuToggle");
+      var mobileMenu=document.getElementById("mobileMenu");
+      function setMenu(open){
+        menuToggle.setAttribute("aria-expanded",String(open));
+        mobileMenu.hidden=!open;
+        mobileMenu.classList.toggle("is-open",open);
+      }
+      menuToggle.addEventListener("click",function(){setMenu(menuToggle.getAttribute("aria-expanded")!=="true")});
+      document.querySelectorAll("#mobileMenu a.nav-link").forEach(function(link){link.addEventListener("click",function(){setMenu(false)})});
+      document.addEventListener("keydown",function(event){if(event.key==="Escape")setMenu(false)});
+      document.querySelectorAll("[data-language]").forEach(function(link){
+        link.addEventListener("click",function(event){
+          event.preventDefault();
+          document.querySelectorAll("[data-language]").forEach(function(item){
+            var active=item.getAttribute("data-language")===link.getAttribute("data-language");
+            item.classList.toggle("active",active);
+            if(active)item.setAttribute("aria-current","true");else item.removeAttribute("aria-current");
+          });
+        });
+      });
+      document.getElementById("newsletterForm").addEventListener("submit",function(event){event.preventDefault()});
+    }());
+  </script>
+</body>
+</html>
