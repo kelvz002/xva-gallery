@@ -1,0 +1,40 @@
+{
+  "title": "Press Loop Card",
+  "type": "loop-item",
+  "version": "0.4",
+  "page_settings": {},
+  "content": [
+    {
+      "id": "000005k",
+      "elType": "container",
+      "isInner": false,
+      "settings": {
+        "content_width": "boxed",
+        "css_classes": "xva-accordion-item"
+      },
+      "elements": [
+        {
+          "id": "000005j",
+          "elType": "widget",
+          "widgetType": "accordion",
+          "settings": {
+            "tabs": [
+              {
+                "tab_title": "[xva_title]",
+                "tab_content": "[xva_field field=\"summary\"]"
+              }
+            ],
+            "css_classes": "xva-press-loop-accordion"
+          },
+          "elements": []
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "xva_template_version": "1.0.0",
+    "xva_source_mockup": "press.html",
+    "xva_display_condition": "Used by Press Loop Grid",
+    "xva_dynamic_content": "ACF fields are rendered through XVA Core shortcodes for portable imports."
+  }
+}

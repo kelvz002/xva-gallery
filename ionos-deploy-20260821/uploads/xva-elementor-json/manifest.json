@@ -1,0 +1,46 @@
+{
+  "generated_by": "tools/generate-elementor-exports.js",
+  "generated_at": "2026-08-20T18:28:02.143Z",
+  "widgets": [
+    "container",
+    "heading",
+    "text-editor",
+    "shortcode",
+    "button",
+    "html",
+    "image",
+    "gallery",
+    "nav-menu",
+    "accordion",
+    "theme-post-title",
+    "theme-post-featured-image"
+  ],
+  "dynamic_source": "XVA Core shortcodes backed by ACF fields; replace shortcode placeholders with native Elementor Dynamic Tags after import where desired.",
+  "pages": [
+    "homepage.json",
+    "artists-archive.json",
+    "artist-single.json",
+    "artist-huma-shoaib.json",
+    "exhibitions-archive.json",
+    "exhibition-single.json",
+    "exhibition-oblivion.json",
+    "art-consultancy.json",
+    "press.json",
+    "contact.json",
+    "hotel-cafe.json",
+    "story-of-art.json",
+    "path-to-modernism.json",
+    "privacy-policy.json",
+    "404.json"
+  ],
+  "site_parts": [
+    "global-header.json",
+    "global-footer.json",
+    "popup-menu.json"
+  ],
+  "loops": [
+    "loop-artist-card.json",
+    "loop-exhibition-card.json",
+    "loop-press-card.json"
+  ]
+}

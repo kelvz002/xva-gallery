@@ -1,0 +1,83 @@
+{
+  "title": "XVA Global Footer",
+  "type": "footer",
+  "version": "0.4",
+  "page_settings": {},
+  "content": [
+    {
+      "id": "000000f",
+      "elType": "container",
+      "isInner": false,
+      "settings": {
+        "content_width": "boxed",
+        "css_classes": "xva-site-footer"
+      },
+      "elements": [
+        {
+          "id": "000000e",
+          "elType": "container",
+          "isInner": false,
+          "settings": {
+            "content_width": "boxed",
+            "css_classes": "xva-shell"
+          },
+          "elements": [
+            {
+              "id": "000000b",
+              "elType": "container",
+              "isInner": false,
+              "settings": {
+                "content_width": "boxed",
+                "css_classes": "xva-footer-top"
+              },
+              "elements": [
+                {
+                  "id": "0000009",
+                  "elType": "widget",
+                  "widgetType": "shortcode",
+                  "settings": {
+                    "shortcode": "[xva_logo class=\"xva-logo xva-logo--light\"]"
+                  },
+                  "elements": []
+                },
+                {
+                  "id": "000000a",
+                  "elType": "widget",
+                  "widgetType": "text-editor",
+                  "settings": {
+                    "editor": "<p class=\"xva-footer-social\"><a href=\"https://www.instagram.com/xvagallery/\">Instagram</a><a href=\"https://www.facebook.com/xvagallery/\">Facebook</a><a href=\"https://twitter.com/XVAGALLERY\">Twitter</a></p>"
+                  },
+                  "elements": []
+                }
+              ]
+            },
+            {
+              "id": "000000c",
+              "elType": "widget",
+              "widgetType": "html",
+              "settings": {
+                "html": "<div class=\"xva-footer-grid\"><div><span class=\"xva-footer-label\">Visit</span><p>Al Fahidi Historical Neighbourhood<br>Dubai, United Arab Emirates</p></div><div><span class=\"xva-footer-label\">Contact</span><p><a href=\"mailto:xva@xvagallery.com\">xva@xvagallery.com</a><br><a href=\"tel:+97143533462\">+971 4 353 3462</a></p></div><div><span class=\"xva-footer-label\">Explore</span><p><a href=\"/artists/\">Artists</a><br><a href=\"/exhibitions/\">Exhibitions</a></p></div><div><span class=\"xva-footer-label\">Opening hours</span><p>Monday–Sunday<br>10:00–18:00</p></div></div>"
+              },
+              "elements": []
+            },
+            {
+              "id": "000000d",
+              "elType": "widget",
+              "widgetType": "html",
+              "settings": {
+                "html": "<div class=\"xva-footer-bottom\"><span>© XVA Gallery</span><a href=\"/privacy-policy/\">Privacy policy</a></div>"
+              },
+              "elements": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "xva_template_version": "1.0.0",
+    "xva_source_mockup": "homepage.html and all page mockups",
+    "xva_display_condition": "Entire site / Footer",
+    "xva_dynamic_content": "ACF fields are rendered through XVA Core shortcodes for portable imports."
+  }
+}

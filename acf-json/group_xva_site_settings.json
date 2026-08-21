@@ -1,0 +1,27 @@
+{
+    "key": "group_xva_site_settings",
+    "title": "XVA Site Settings",
+    "fields": [
+        {"key":"field_xva_site_logo","label":"Primary logo","name":"site_logo","type":"image","return_format":"array","preview_size":"medium","library":"all"},
+        {"key":"field_xva_site_logo_alt","label":"Alternate logo","name":"site_logo_alt","type":"image","return_format":"array","preview_size":"medium","library":"all"},
+        {"key":"field_xva_site_address","label":"Address","name":"site_address","type":"textarea","rows":3,"new_lines":"br"},
+        {"key":"field_xva_site_map_url","label":"Map URL","name":"site_map_url","type":"url"},
+        {"key":"field_xva_site_phone","label":"Phone","name":"site_phone","type":"text"},
+        {"key":"field_xva_site_email","label":"Email","name":"site_email","type":"email"},
+        {"key":"field_xva_site_opening_hours","label":"Opening hours","name":"site_opening_hours","type":"textarea","rows":4,"new_lines":"br"},
+        {"key":"field_xva_site_instagram","label":"Instagram URL","name":"site_instagram","type":"url"},
+        {"key":"field_xva_site_facebook","label":"Facebook URL","name":"site_facebook","type":"url"},
+        {"key":"field_xva_site_twitter","label":"Twitter URL","name":"site_twitter","type":"url"},
+        {"key":"field_xva_site_shop_url","label":"Shop URL","name":"site_shop_url","type":"url"},
+        {"key":"field_xva_site_announcement","label":"Announcement","name":"site_announcement","type":"text"}
+    ],
+    "location": [[{"param":"options_page","operator":"==","value":"xva-site-settings"}]],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "active": true,
+    "show_in_rest": 1,
+    "description": "Global XVA Gallery content used by the Elementor header and footer."
+}

@@ -1,0 +1,36 @@
+{
+  "site": {
+    "name": "XVA Gallery",
+    "address": "Al Fahidi Historical Neighbourhood, Dubai, United Arab Emirates",
+    "email": "xva@xvagallery.com",
+    "phone": "+971 4 353 3462",
+    "opening_hours": "Monday–Sunday / 10:00–18:00"
+  },
+  "artists": [
+    {"title":"Akim Monet","portrait":"artist-akim.jpg","region":"Arab world"},
+    {"title":"Al Braithwaite","portrait":"artist-al-braithwaite.jpg","region":"Arab world"},
+    {"title":"Alejandra Palos","portrait":"artist-alejandra.jpg","region":"Sub-continent"},
+    {"title":"Azad Nanakeli","portrait":"artist-halim.jpg","region":"Arab world"},
+    {"title":"Barbara Wildenboer","portrait":"artist-charlie.jpg","region":"Sub-continent"},
+    {"title":"Charlie Koolhaas","portrait":"artist-hussein.jpg","region":"Arab world"},
+    {"title":"Halim Al Karim","portrait":"artist-halim.jpg","region":"Arab world"},
+    {"title":"Huma Shoaib","portrait":"artist-huma.jpg","region":"Sub-continent"},
+    {"title":"Hussein Al-Mohasen","portrait":"artist-hussein.jpg","region":"Arab world"},
+    {"title":"Mona Saudi","portrait":"artist-mona.jpg","region":"Arab world"},
+    {"title":"Moussa Tiba","portrait":"artist-moussa.jpg","region":"Arab world"},
+    {"title":"Naqsh Raj","portrait":"artist-naqsh.jpg","region":"Sub-continent"}
+  ],
+  "exhibitions": [
+    {"title":"Oblivion","status":"current","start_date":"20 January 2026","end_date":"28 February 2026","hero_image":"oblivion.webp"},
+    {"title":"After Image","status":"archive","hero_image":"ex-after-image.jpg"},
+    {"title":"Fractal Memory","status":"archive","hero_image":"ex-fractal.jpg"}
+  ],
+  "homepage_media": ["hero-01.webp","hero-02.webp","hero-03.webp","hero-04.webp"],
+  "field_notes": {
+    "artist_portrait": "ACF image field portrait",
+    "artist_gallery": "ACF Gallery field artwork_gallery",
+    "exhibition_hero": "ACF image field hero_image",
+    "exhibition_gallery": "ACF Gallery field artwork_gallery",
+    "relationships": "ACF Relationship fields selected_exhibitions and participating_artists"
+  }
+}

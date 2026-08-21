@@ -1,0 +1,105 @@
+{
+  "title": "XVA Global Header",
+  "type": "header",
+  "version": "0.4",
+  "page_settings": {},
+  "content": [
+    {
+      "id": "0000008",
+      "elType": "container",
+      "isInner": false,
+      "settings": {
+        "content_width": "boxed",
+        "css_classes": "xva-site-header xva-site-header--dark"
+      },
+      "elements": [
+        {
+          "id": "0000006",
+          "elType": "container",
+          "isInner": false,
+          "settings": {
+            "content_width": "boxed",
+            "css_classes": "xva-header-shell"
+          },
+          "elements": [
+            {
+              "id": "0000001",
+              "elType": "widget",
+              "widgetType": "shortcode",
+              "settings": {
+                "shortcode": "[xva_logo class=\"xva-logo\"]",
+                "css_classes": "xva-brand"
+              },
+              "elements": []
+            },
+            {
+              "id": "0000005",
+              "elType": "container",
+              "isInner": false,
+              "settings": {
+                "content_width": "boxed",
+                "css_classes": "xva-header-meta"
+              },
+              "elements": [
+                {
+                  "id": "0000002",
+                  "elType": "widget",
+                  "widgetType": "text-editor",
+                  "settings": {
+                    "editor": "<p class=\"xva-language-switch\"><a href=\"#\">AR</a> <span aria-hidden=\"true\">/</span> <a href=\"#\" aria-current=\"true\">EN</a></p>"
+                  },
+                  "elements": []
+                },
+                {
+                  "id": "0000003",
+                  "elType": "widget",
+                  "widgetType": "icon",
+                  "settings": {
+                    "icon": {
+                      "value": "fas fa-shopping-bag",
+                      "library": "solid"
+                    },
+                    "link": {
+                      "url": "/shop/"
+                    },
+                    "size": "xs",
+                    "css_classes": "xva-shop-link"
+                  },
+                  "elements": []
+                },
+                {
+                  "id": "0000004",
+                  "elType": "widget",
+                  "widgetType": "button",
+                  "settings": {
+                    "text": "Menu",
+                    "button_type": "",
+                    "size": "xs",
+                    "icon_align": "right",
+                    "css_classes": "xva-menu-toggle"
+                  },
+                  "elements": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "0000007",
+          "elType": "widget",
+          "widgetType": "html",
+          "settings": {
+            "html": "<div class=\"xva-header-rule\" aria-hidden=\"true\"></div>"
+          },
+          "elements": []
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "xva_template_version": "1.0.0",
+    "xva_source_mockup": "homepage.html and all page mockups",
+    "xva_display_condition": "Entire site / Header",
+    "xva_dynamic_content": "ACF fields are rendered through XVA Core shortcodes for portable imports."
+  }
+}

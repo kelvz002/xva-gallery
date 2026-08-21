@@ -1,0 +1,63 @@
+{
+  "title": "XVA 404",
+  "type": "error-404",
+  "version": "0.4",
+  "page_settings": {},
+  "content": [
+    {
+      "id": "000005a",
+      "elType": "container",
+      "isInner": false,
+      "settings": {
+        "content_width": "boxed",
+        "css_classes": "xva-page-hero xva-page-hero--night"
+      },
+      "elements": [
+        {
+          "id": "0000059",
+          "elType": "container",
+          "isInner": false,
+          "settings": {
+            "content_width": "boxed",
+            "css_classes": "xva-shell"
+          },
+          "elements": [
+            {
+              "id": "0000057",
+              "elType": "widget",
+              "widgetType": "text-editor",
+              "settings": {
+                "editor": "<span class=\"xva-kicker xva-kicker--light\">XVA Gallery</span><h1 class=\"xva-serif\">Page not found.</h1><p class=\"xva-page-hero__meta\">The page may have moved. Return to the gallery programme.</p>",
+                "css_classes": "xva-page-hero__top"
+              },
+              "elements": []
+            },
+            {
+              "id": "0000058",
+              "elType": "widget",
+              "widgetType": "button",
+              "settings": {
+                "text": "Return home",
+                "link": {
+                  "url": "/",
+                  "is_external": "",
+                  "nofollow": ""
+                },
+                "button_type": "",
+                "size": "xs",
+                "css_classes": "xva-button-link"
+              },
+              "elements": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "xva_template_version": "1.0.0",
+    "xva_source_mockup": "404.html",
+    "xva_display_condition": "404 error template",
+    "xva_dynamic_content": "ACF fields are rendered through XVA Core shortcodes for portable imports."
+  }
+}

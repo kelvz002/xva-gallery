@@ -1,0 +1,21 @@
+# Local/generated duplicate staging data
+/backups/
+/media-sync-20260821/
+/_asset-cache-build/
+/deployment-cache/
+
+# Generated distribution archives (the unpacked canonical backup is committed)
+/xva-gallery-*.zip
+
+# Local runtime/config secrets and logs
+.env
+.env.*
+!.env.example
+*.log
+wp-config.php
+wp-config-*.php
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+*.tmp

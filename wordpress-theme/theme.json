@@ -1,0 +1,32 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 3,
+  "settings": {
+    "appearanceTools": true,
+    "layout": {
+      "contentSize": "1320px",
+      "wideSize": "1440px"
+    },
+    "color": {
+      "palette": [
+        {"slug":"paper","color":"#f4f0e8","name":"Paper"},
+        {"slug":"paper-2","color":"#ebe5da","name":"Paper 2"},
+        {"slug":"white","color":"#fffaf4","name":"Warm White"},
+        {"slug":"ink","color":"#113b47","name":"Ink"},
+        {"slug":"ink-2","color":"#1e5663","name":"Ink 2"},
+        {"slug":"night","color":"#101617","name":"Night"},
+        {"slug":"accent","color":"#c7ddda","name":"Accent"}
+      ]
+    },
+    "typography": {
+      "fontFamilies": [
+        {"fontFamily":"Arial, Helvetica, sans-serif","slug":"xva-sans","name":"XVA Sans"},
+        {"fontFamily":"Georgia, 'Times New Roman', serif","slug":"xva-serif","name":"XVA Serif"}
+      ]
+    }
+  },
+  "styles": {
+    "color": {"background":"var:preset|color|paper","text":"#161c1d"},
+    "typography": {"fontFamily":"var:preset|font-family|xva-sans","fontSize":"16px","lineHeight":"1.55"}
+  }
+}

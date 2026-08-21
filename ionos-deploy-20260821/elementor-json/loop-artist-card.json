@@ -1,0 +1,69 @@
+{
+  "title": "Artist Loop Card",
+  "type": "loop-item",
+  "version": "0.4",
+  "page_settings": {},
+  "content": [
+    {
+      "id": "000005f",
+      "elType": "container",
+      "isInner": false,
+      "settings": {
+        "content_width": "boxed",
+        "css_classes": "xva-card xva-artist-card"
+      },
+      "elements": [
+        {
+          "id": "000005b",
+          "elType": "widget",
+          "widgetType": "theme-post-featured-image",
+          "settings": {
+            "image_size": "xva-portrait",
+            "image_link_to": "post",
+            "css_classes": "xva-card__media"
+          },
+          "elements": []
+        },
+        {
+          "id": "000005e",
+          "elType": "container",
+          "isInner": false,
+          "settings": {
+            "content_width": "boxed",
+            "css_classes": "xva-artist-card__meta"
+          },
+          "elements": [
+            {
+              "id": "000005c",
+              "elType": "widget",
+              "widgetType": "theme-post-title",
+              "settings": {
+                "title_tag": "h3",
+                "link": {
+                  "url": ""
+                },
+                "css_classes": "xva-artist-card__name"
+              },
+              "elements": []
+            },
+            {
+              "id": "000005d",
+              "elType": "widget",
+              "widgetType": "text-editor",
+              "settings": {
+                "editor": "<span class=\"xva-artist-card__index\">01</span>"
+              },
+              "elements": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "xva_template_version": "1.0.0",
+    "xva_source_mockup": "artists.html",
+    "xva_display_condition": "Used by Artist Loop Grid",
+    "xva_dynamic_content": "ACF fields are rendered through XVA Core shortcodes for portable imports."
+  }
+}

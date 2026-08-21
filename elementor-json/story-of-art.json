@@ -1,0 +1,23 @@
+{
+  "title": "The Story of Art",
+  "type": "page",
+  "version": "0.4",
+  "page_settings": {},
+  "content": [
+    {
+      "id": "xva-story-container",
+      "elType": "container",
+      "isInner": false,
+      "settings": { "content_width": "full" },
+      "elements": [
+        {
+          "id": "xva-story-shortcode",
+          "elType": "widget",
+          "widgetType": "shortcode",
+          "settings": { "shortcode": "[xva_mockup_page page=\"story-of-art\"]" },
+          "elements": []
+        }
+      ]
+    }
+  ]
+}

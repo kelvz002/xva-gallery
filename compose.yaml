@@ -1,0 +1,74 @@
+name: xva-gallery-wordpress
+
+services:
+  db:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: xva_wp_db_dev_password
+      MYSQL_ROOT_PASSWORD: xva_wp_root_dev_password
+    volumes:
+      - xva_db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -pxva_wp_root_dev_password --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  wordpress:
+    image: wordpress:php8.3-apache
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8090:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: xva_wp_db_dev_password
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DEBUG: "1"
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_DEBUG_LOG', true);
+        define('WP_DEBUG_DISPLAY', false);
+        define('WP_MEMORY_LIMIT', '256M');
+        define('DISALLOW_FILE_EDIT', false);
+    volumes:
+      - xva_wordpress_data:/var/www/html
+      - ./php.ini:/usr/local/etc/php/conf.d/uploads.ini:ro
+      - ./wordpress-theme:/var/www/html/wp-content/themes/xva-gallery
+      - ./xva-gallery-core:/var/www/html/wp-content/plugins/xva-gallery-core
+      - ./elementor-json:/var/www/html/wp-content/uploads/xva-elementor-json
+      - ./acf-json:/var/www/html/wp-content/uploads/xva-acf-json
+      - ./tools:/var/www/html/wp-content/uploads/xva-tools
+
+  wpcli:
+    image: wordpress:cli-php8.3
+    profiles: ["tools"]
+    depends_on:
+      db:
+        condition: service_healthy
+      wordpress:
+        condition: service_started
+    user: "33:33"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: xva_wp_db_dev_password
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - xva_wordpress_data:/var/www/html
+      - ./php.ini:/usr/local/etc/php/conf.d/uploads.ini:ro
+      - ./wordpress-theme:/var/www/html/wp-content/themes/xva-gallery
+      - ./xva-gallery-core:/var/www/html/wp-content/plugins/xva-gallery-core
+      - ./elementor-json:/var/www/html/wp-content/uploads/xva-elementor-json
+      - ./acf-json:/var/www/html/wp-content/uploads/xva-acf-json
+      - ./tools:/var/www/html/wp-content/uploads/xva-tools
+
+volumes:
+  xva_db_data:
+  xva_wordpress_data:

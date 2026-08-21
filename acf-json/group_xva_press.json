@@ -1,0 +1,21 @@
+{
+    "key": "group_xva_press",
+    "title": "Press release details",
+    "fields": [
+        {"key":"field_xva_press_summary","label":"Summary","name":"summary","type":"textarea","rows":3,"new_lines":"br"},
+        {"key":"field_xva_press_cover","label":"Cover image","name":"cover_image","type":"image","return_format":"array","preview_size":"medium","library":"all"},
+        {"key":"field_xva_press_pdf","label":"Press PDF","name":"press_pdf","type":"file","return_format":"array","library":"all"},
+        {"key":"field_xva_press_external_url","label":"External article URL","name":"external_url","type":"url"},
+        {"key":"field_xva_press_related_artist","label":"Related artist","name":"related_artist","type":"relationship","post_type":["xva_artist"],"filters":["search"],"return_format":"object","min":0,"max":1},
+        {"key":"field_xva_press_related_exhibition","label":"Related exhibition","name":"related_exhibition","type":"relationship","post_type":["xva_exhibition"],"filters":["search"],"return_format":"object","min":0,"max":1}
+    ],
+    "location": [[{"param":"post_type","operator":"==","value":"xva_press"}]],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "active": true,
+    "show_in_rest": 1,
+    "description": "Dynamic fields for the Press page and press item loop."
+}

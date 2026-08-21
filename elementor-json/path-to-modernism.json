@@ -1,0 +1,23 @@
+{
+  "title": "Path to Modernism",
+  "type": "page",
+  "version": "0.4",
+  "page_settings": {},
+  "content": [
+    {
+      "id": "xva-modernism-container",
+      "elType": "container",
+      "isInner": false,
+      "settings": { "content_width": "full" },
+      "elements": [
+        {
+          "id": "xva-modernism-shortcode",
+          "elType": "widget",
+          "widgetType": "shortcode",
+          "settings": { "shortcode": "[xva_mockup_page page=\"path-to-modernism\"]" },
+          "elements": []
+        }
+      ]
+    }
+  ]
+}

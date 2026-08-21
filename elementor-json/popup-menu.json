@@ -1,0 +1,70 @@
+{
+  "title": "XVA Fullscreen Menu",
+  "type": "popup",
+  "version": "0.4",
+  "page_settings": {},
+  "content": [
+    {
+      "id": "000000k",
+      "elType": "container",
+      "isInner": false,
+      "settings": {
+        "content_width": "boxed",
+        "css_classes": "xva-menu-drawer"
+      },
+      "elements": [
+        {
+          "id": "000000i",
+          "elType": "container",
+          "isInner": false,
+          "settings": {
+            "content_width": "boxed",
+            "css_classes": "xva-menu-intro"
+          },
+          "elements": [
+            {
+              "id": "000000g",
+              "elType": "widget",
+              "widgetType": "text-editor",
+              "settings": {
+                "editor": "<span class=\"xva-kicker xva-kicker--light\">XVA Gallery / Dubai</span><h2 class=\"xva-serif\">Contemporary art, considered.</h2>"
+              },
+              "elements": []
+            },
+            {
+              "id": "000000h",
+              "elType": "widget",
+              "widgetType": "text-editor",
+              "settings": {
+                "editor": "<p class=\"xva-menu-foot\"><a href=\"/contact/\">Visit the gallery</a><a href=\"mailto:xva@xvagallery.com\">xva@xvagallery.com</a></p>"
+              },
+              "elements": []
+            }
+          ]
+        },
+        {
+          "id": "000000j",
+          "elType": "widget",
+          "widgetType": "nav-menu",
+          "settings": {
+            "menu": "primary",
+            "layout": "vertical",
+            "pointer": "none",
+            "submenu_icon": {
+              "value": "fas fa-arrow-right",
+              "library": "solid"
+            },
+            "css_classes": "xva-menu-nav"
+          },
+          "elements": []
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "xva_template_version": "1.0.0",
+    "xva_source_mockup": "homepage.html",
+    "xva_display_condition": "Popup triggered by global menu button",
+    "xva_dynamic_content": "ACF fields are rendered through XVA Core shortcodes for portable imports."
+  }
+}

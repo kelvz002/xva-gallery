@@ -1,0 +1,23 @@
+{
+  "title": "Huma Shoaib Artist Page",
+  "type": "page",
+  "version": "0.4",
+  "page_settings": {},
+  "content": [
+    {
+      "id": "xva-artist-sample-container",
+      "elType": "container",
+      "isInner": false,
+      "settings": { "content_width": "full" },
+      "elements": [
+        {
+          "id": "xva-artist-sample-shortcode",
+          "elType": "widget",
+          "widgetType": "shortcode",
+          "settings": { "shortcode": "[xva_mockup_single type=\"artist\"]" },
+          "elements": []
+        }
+      ]
+    }
+  ]
+}

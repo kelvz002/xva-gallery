@@ -1,0 +1,23 @@
+{
+  "title": "Art Consultancy",
+  "type": "page",
+  "version": "0.4",
+  "page_settings": {},
+  "content": [
+    {
+      "id": "xva-consultancy-container",
+      "elType": "container",
+      "isInner": false,
+      "settings": { "content_width": "full" },
+      "elements": [
+        {
+          "id": "xva-consultancy-shortcode",
+          "elType": "widget",
+          "widgetType": "shortcode",
+          "settings": { "shortcode": "[xva_mockup_page page=\"art-consultancy\"]" },
+          "elements": []
+        }
+      ]
+    }
+  ]
+}

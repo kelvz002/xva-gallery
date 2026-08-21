@@ -1,0 +1,26 @@
+{
+    "key": "group_xva_artist",
+    "title": "Artist profile",
+    "fields": [
+        {"key":"field_xva_artist_portrait","label":"Portrait / primary artwork","name":"portrait","type":"image","return_format":"array","preview_size":"medium","library":"all","required":1},
+        {"key":"field_xva_artist_intro","label":"Introduction","name":"intro","type":"textarea","rows":3,"new_lines":"br"},
+        {"key":"field_xva_artist_biography","label":"Biography","name":"biography","type":"wysiwyg","tabs":"all","toolbar":"full","media_upload":0},
+        {"key":"field_xva_artist_statement","label":"Artist statement","name":"artist_statement","type":"wysiwyg","tabs":"all","toolbar":"full","media_upload":0},
+        {"key":"field_xva_artist_origin","label":"Origin / location","name":"origin","type":"text"},
+        {"key":"field_xva_artist_birth","label":"Birth information","name":"birth_information","type":"text"},
+        {"key":"field_xva_artist_education","label":"Education","name":"education","type":"textarea","rows":4,"new_lines":"br"},
+        {"key":"field_xva_artist_gallery","label":"Artwork gallery","name":"artwork_gallery","type":"gallery","return_format":"array","preview_size":"medium","insert":"append","library":"all"},
+        {"key":"field_xva_artist_exhibitions","label":"Selected exhibitions","name":"selected_exhibitions","type":"relationship","post_type":["xva_exhibition"],"filters":["search","taxonomy"],"return_format":"object","min":0,"max":0},
+        {"key":"field_xva_artist_press","label":"Press links","name":"press_links","type":"repeater","layout":"table","button_label":"Add press link","sub_fields":[{"key":"field_xva_artist_press_title","label":"Title","name":"title","type":"text"},{"key":"field_xva_artist_press_url","label":"URL","name":"url","type":"url"}]},
+        {"key":"field_xva_artist_cv","label":"CV / biography download","name":"cv_download","type":"file","return_format":"array","library":"all"}
+    ],
+    "location": [[{"param":"post_type","operator":"==","value":"xva_artist"}]],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "active": true,
+    "show_in_rest": 1,
+    "description": "Dynamic fields for the Artist Page template."
+}

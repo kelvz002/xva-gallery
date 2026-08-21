@@ -1,0 +1,23 @@
+{
+  "title": "Exhibitions Archive",
+  "type": "archive",
+  "version": "0.4",
+  "page_settings": {},
+  "content": [
+    {
+      "id": "xva-exhibitions-container",
+      "elType": "container",
+      "isInner": false,
+      "settings": { "content_width": "full" },
+      "elements": [
+        {
+          "id": "xva-exhibitions-shortcode",
+          "elType": "widget",
+          "widgetType": "shortcode",
+          "settings": { "shortcode": "[xva_mockup_page page=\"exhibitions\"]" },
+          "elements": []
+        }
+      ]
+    }
+  ]
+}

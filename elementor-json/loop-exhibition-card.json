@@ -1,0 +1,45 @@
+{
+  "title": "Exhibition Loop Card",
+  "type": "loop-item",
+  "version": "0.4",
+  "page_settings": {},
+  "content": [
+    {
+      "id": "000005i",
+      "elType": "container",
+      "isInner": false,
+      "settings": {
+        "content_width": "boxed",
+        "css_classes": "xva-card xva-exhibition-card"
+      },
+      "elements": [
+        {
+          "id": "000005g",
+          "elType": "widget",
+          "widgetType": "theme-post-featured-image",
+          "settings": {
+            "image_size": "xva-card",
+            "image_link_to": "post",
+            "css_classes": "xva-card__media"
+          },
+          "elements": []
+        },
+        {
+          "id": "000005h",
+          "elType": "widget",
+          "widgetType": "text-editor",
+          "settings": {
+            "editor": "<span class=\"xva-meta\">[xva_field field=\"start_date\"]</span><h3>[xva_title]</h3><p>[xva_field field=\"intro\"]</p><span class=\"xva-card-link\">View exhibition <svg class=\"xva-icon xva-icon--external\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M14 4h6v6M20 4l-9 9\"/><path d=\"M19 13v6a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h6\"/></svg></span>"
+          },
+          "elements": []
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "xva_template_version": "1.0.0",
+    "xva_source_mockup": "exhibitions.html",
+    "xva_display_condition": "Used by Exhibition Loop Grid",
+    "xva_dynamic_content": "ACF fields are rendered through XVA Core shortcodes for portable imports."
+  }
+}

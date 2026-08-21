@@ -1,0 +1,23 @@
+{
+  "title": "Hotel & Cafe",
+  "type": "page",
+  "version": "0.4",
+  "page_settings": {},
+  "content": [
+    {
+      "id": "xva-hotel-container",
+      "elType": "container",
+      "isInner": false,
+      "settings": { "content_width": "full" },
+      "elements": [
+        {
+          "id": "xva-hotel-shortcode",
+          "elType": "widget",
+          "widgetType": "shortcode",
+          "settings": { "shortcode": "[xva_mockup_page page=\"hotel-cafe\"]" },
+          "elements": []
+        }
+      ]
+    }
+  ]
+}

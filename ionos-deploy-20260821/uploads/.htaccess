@@ -1,0 +1,10 @@
+<IfModule mod_expires.c>
+	ExpiresActive On
+	ExpiresDefault "access plus 7 days"
+</IfModule>
+
+<IfModule mod_headers.c>
+	<FilesMatch "\.(?:avif|gif|jpe?g|png|svg|webp)$">
+		Header set Cache-Control "public, max-age=604800, stale-while-revalidate=86400"
+	</FilesMatch>
+</IfModule>

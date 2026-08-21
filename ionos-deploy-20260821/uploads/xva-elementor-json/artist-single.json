@@ -1,0 +1,23 @@
+{
+  "title": "Artist Page Template",
+  "type": "single",
+  "version": "0.4",
+  "page_settings": {},
+  "content": [
+    {
+      "id": "xva-artist-single-container",
+      "elType": "container",
+      "isInner": false,
+      "settings": { "content_width": "full" },
+      "elements": [
+        {
+          "id": "xva-artist-single-shortcode",
+          "elType": "widget",
+          "widgetType": "shortcode",
+          "settings": { "shortcode": "[xva_mockup_single type=\"artist\"]" },
+          "elements": []
+        }
+      ]
+    }
+  ]
+}
