@@ -93,6 +93,11 @@ function xva_core_mockup_field_html( $field, $post_id, $fallback = '' ) {
 	return wp_kses_post( (string) $value );
 }
 
+function xva_core_mockup_artist_strip_bio_prefix( $value ) {
+	$value = (string) $value;
+	return preg_replace( '/^(\s*(?:<[^>]+>\s*)*)bio\b(?:\s*[:\-–—]\s*|\s+|&nbsp;|&#160;)*/iu', '$1', $value, 1 );
+}
+
 function xva_core_mockup_dom_has_class( $node, $class ) {
 	if ( ! is_object( $node ) || ! method_exists( $node, 'getAttribute' ) ) {
 		return false;
@@ -113,7 +118,7 @@ function xva_core_mockup_dom_inner_html( $node ) {
 }
 
 function xva_core_mockup_artist_clean_html( $html ) {
-	$html = wp_kses_post( (string) $html );
+	$html = xva_core_mockup_artist_strip_bio_prefix( wp_kses_post( (string) $html ) );
 	$html = preg_replace( '/<p[^>]*>\s*(?:(?:&nbsp;|&#160;|\xC2\xA0|<br\s*\/?\s*>|\s)*)<\/p>/i', '', $html );
 	$html = preg_replace( '/(?:\s*<br\s*\/?\s*>\s*){3,}/i', '<br>', $html );
 	$plain = trim( preg_replace( '/\s+/', ' ', wp_strip_all_tags( html_entity_decode( $html, ENT_QUOTES, 'UTF-8' ) ) ) );
@@ -308,6 +313,138 @@ function xva_core_mockup_date( $field, $post_id, $fallback = '' ) {
 	return (string) $value;
 }
 
+function xva_core_mockup_date_from_parts( $day, $month, $year ) {
+	$day    = absint( $day );
+	$year   = absint( $year );
+	$month  = strtolower( trim( (string) $month ) );
+	$months = array(
+		'january'   => 1,
+		'february'  => 2,
+		'march'     => 3,
+		'april'     => 4,
+		'may'       => 5,
+		'june'      => 6,
+		'july'      => 7,
+		'august'    => 8,
+		'september' => 9,
+		'october'   => 10,
+		'november'  => 11,
+		'december'  => 12,
+	);
+	if ( ! $day || ! $year || ! isset( $months[ $month ] ) ) {
+		return '';
+	}
+	$date = DateTime::createFromFormat( '!j-n-Y', $day . '-' . $months[ $month ] . '-' . $year );
+	return $date ? wp_date( 'j F Y', $date->getTimestamp() ) : '';
+}
+
+function xva_core_mockup_exhibition_date_range_from_text( $text ) {
+	$text = html_entity_decode( wp_strip_all_tags( (string) $text ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+	$text = str_replace( array( "\xC2\xA0", '–', '—', '−', '‑' ), array( ' ', '-', '-', '-', '-' ), $text );
+	$text = trim( preg_replace( '/\s+/', ' ', $text ) );
+	if ( ! $text ) {
+		return '';
+	}
+
+	$month_names = 'January|February|March|April|May|June|July|August|September|October|November|December';
+	$year        = '(?:19|20)\d{2}';
+	$separator   = '(?:to|through|until|-)';
+	$day         = '(\d{1,2})(?:st|nd|rd|th)?';
+	$patterns    = array(
+		// Month-first ranges where each side carries its own year.
+		'/\b(' . $month_names . ')\s+' . $day . '\s*,?\s*(' . $year . ')\s*' . $separator . '\s*(?:(\d{1,2})(?:st|nd|rd|th)?\s+)?(' . $month_names . ')\s*,?\s*(' . $year . ')\b/i',
+		// Day-first ranges where each side carries its own year.
+		'/\b' . $day . '\s+(' . $month_names . ')\s*,?\s*(' . $year . ')\s*' . $separator . '\s*' . $day . '\s+(' . $month_names . ')\s*,?\s*(' . $year . ')\b/i',
+		// A month-first range whose second side starts with the day, e.g. March 17 - 18 April 2018.
+		'/\b(' . $month_names . ')\s+' . $day . '\s*' . $separator . '\s*' . $day . '\s+(' . $month_names . ')\s*,?\s*(' . $year . ')\b/i',
+		// Month-first ranges with one year at the end, including November 06 - 16, 2019.
+		'/\b(' . $month_names . ')\s+' . $day . '\s*' . $separator . '\s*(?:(' . $month_names . ')\s+)?' . $day . '\s*,?\s*(' . $year . ')\b/i',
+		// Day-first ranges with one year at the end, including 11 January - 4 March 2018.
+		'/\b' . $day . '\s+(' . $month_names . ')\s*' . $separator . '\s*' . $day . '\s+(' . $month_names . ')\s*,?\s*(' . $year . ')\b/i',
+	);
+
+	foreach ( $patterns as $index => $pattern ) {
+		if ( ! preg_match( $pattern, $text, $match ) ) {
+			continue;
+		}
+
+		$start = '';
+		$end   = '';
+		if ( 0 === $index ) {
+			$start = xva_core_mockup_date_from_parts( $match[2], $match[1], $match[3] );
+			$end   = xva_core_mockup_date_from_parts( $match[4], $match[5], $match[6] );
+		} elseif ( 1 === $index ) {
+			$start = xva_core_mockup_date_from_parts( $match[1], $match[2], $match[3] );
+			$end   = xva_core_mockup_date_from_parts( $match[4], $match[5], $match[6] );
+		} elseif ( 2 === $index ) {
+			$start = xva_core_mockup_date_from_parts( $match[2], $match[1], $match[5] );
+			$end   = xva_core_mockup_date_from_parts( $match[3], $match[4], $match[5] );
+		} elseif ( 3 === $index ) {
+			$start = xva_core_mockup_date_from_parts( $match[2], $match[1], $match[5] );
+			$end   = xva_core_mockup_date_from_parts( $match[4], $match[3] ? $match[3] : $match[1], $match[5] );
+		} else {
+			$start = xva_core_mockup_date_from_parts( $match[1], $match[2], $match[5] );
+			$end   = xva_core_mockup_date_from_parts( $match[4], $match[3], $match[5] );
+		}
+
+		if ( $start && $end ) {
+			return $start . ' – ' . $end;
+		}
+	}
+
+	return '';
+}
+
+function xva_core_mockup_exhibition_date_range( $post_id, $fallback = '' ) {
+	$start = xva_core_mockup_date( 'start_date', $post_id, '' );
+	$end   = xva_core_mockup_date( 'end_date', $post_id, '' );
+	if ( $start && $end ) {
+		return $start . ' – ' . $end;
+	}
+
+	$sources = array(
+		xva_core_get_field( 'intro', $post_id, '' ),
+		xva_core_get_field( 'curatorial_text', $post_id, '' ),
+		get_post_field( 'post_excerpt', $post_id ),
+		get_post_field( 'post_content', $post_id ),
+	);
+	foreach ( $sources as $source ) {
+		$range = xva_core_mockup_exhibition_date_range_from_text( $source );
+		if ( $range ) {
+			return $range;
+		}
+	}
+
+	$overrides = array(
+		'white'   => '25 April 2026 – 21 May 2026',
+		'fractal' => '7 February 2026 – 5 March 2026',
+	);
+	$slug = get_post_field( 'post_name', $post_id );
+	if ( isset( $overrides[ $slug ] ) ) {
+		return $overrides[ $slug ];
+	}
+	if ( $start ) {
+		return $start;
+	}
+	if ( $end ) {
+		return $end;
+	}
+	return (string) $fallback;
+}
+
+function xva_core_mockup_exhibition_start_date( $post_id, $fallback = '' ) {
+	$start = xva_core_mockup_date( 'start_date', $post_id, '' );
+	if ( $start ) {
+		return $start;
+	}
+	$range = xva_core_mockup_exhibition_date_range( $post_id, '' );
+	if ( $range ) {
+		$parts = preg_split( '/\s+–\s+/u', $range, 2 );
+		return trim( $parts[0] );
+	}
+	return (string) $fallback;
+}
+
 function xva_core_mockup_artist_image( $post_id, $fallback = 'artist-huma.jpg' ) {
 	$value = xva_core_get_field( 'portrait', $post_id );
 	$url   = xva_core_image_url( $value, 'xva-portrait' );
@@ -317,20 +454,75 @@ function xva_core_mockup_artist_image( $post_id, $fallback = 'artist-huma.jpg' )
 	return $url ? $url : get_template_directory_uri() . '/assets/images/' . rawurlencode( $fallback );
 }
 
-function xva_core_mockup_exhibition_image( $post_id, $fallback = 'oblivion.webp' ) {
-	$value = xva_core_get_field( 'hero_image', $post_id );
-	$url   = xva_core_image_url( $value, 'xva-card' );
-	if ( ! $url ) {
-		$gallery = xva_core_get_field( 'artwork_gallery', $post_id, array() );
-		foreach ( (array) $gallery as $item ) {
-			$url = xva_core_image_url( $item, 'xva-card' );
-			if ( $url ) {
-				break;
-			}
+function xva_core_mockup_exhibition_gallery_items( $post_id, $size = 'large' ) {
+	$native_ids = function_exists( 'xva_core_native_exhibition_gallery_ids' ) ? xva_core_native_exhibition_gallery_ids( $post_id ) : null;
+	$gallery    = null !== $native_ids ? $native_ids : xva_core_get_field( 'artwork_gallery', $post_id, array() );
+	$items   = array();
+	$title   = get_the_title( $post_id );
+	foreach ( (array) $gallery as $item ) {
+		$url = xva_core_image_url( $item, $size );
+		if ( ! $url ) {
+			continue;
 		}
+		$items[] = array(
+			'url'     => $url,
+			'alt'     => is_array( $item ) && ! empty( $item['alt'] ) ? $item['alt'] : $title . ' exhibition',
+			'caption' => is_array( $item ) && ! empty( $item['caption'] ) ? $item['caption'] : '',
+		);
+	}
+	return $items;
+}
+
+function xva_core_mockup_exhibition_hero_slides( $post_id, $fallback = 'oblivion.webp' ) {
+	$title  = get_the_title( $post_id );
+	$date   = xva_core_mockup_exhibition_date_range( $post_id, '' );
+	$items  = xva_core_mockup_exhibition_gallery_items( $post_id, 'xva-hero' );
+	$slides = array();
+
+	foreach ( $items as $item ) {
+		$slides[] = array(
+			'image'  => $item['url'],
+			'alt'    => ! empty( $item['alt'] ) ? $item['alt'] : $title . ' exhibition artwork',
+			'title'  => $title,
+			'date'   => $date,
+			'source' => 'artwork-gallery',
+		);
+	}
+
+	if ( ! $slides ) {
+		$slides[] = array(
+			'image'  => xva_core_mockup_exhibition_poster( $post_id, $fallback, 'large' ),
+			'alt'    => $title . ' exhibition poster',
+			'title'  => $title,
+			'date'   => $date,
+			'source' => 'poster-fallback',
+		);
+	}
+
+	return $slides;
+}
+
+function xva_core_mockup_exhibition_image( $post_id, $fallback = 'oblivion.webp', $size = 'xva-card' ) {
+	$gallery = xva_core_mockup_exhibition_gallery_items( $post_id, $size );
+	$url     = ! empty( $gallery[0]['url'] ) ? $gallery[0]['url'] : '';
+	if ( ! $url ) {
+		$url = get_the_post_thumbnail_url( $post_id, $size );
 	}
 	if ( ! $url ) {
-		$url = get_the_post_thumbnail_url( $post_id, 'xva-card' );
+		$value = xva_core_get_field( 'hero_image', $post_id );
+		$url   = xva_core_image_url( $value, $size );
+	}
+	return $url ? $url : get_template_directory_uri() . '/assets/images/' . rawurlencode( $fallback );
+}
+
+function xva_core_mockup_exhibition_poster( $post_id, $fallback = 'oblivion.webp', $size = 'large' ) {
+	$value = xva_core_get_field( 'hero_image', $post_id );
+	$url   = xva_core_image_url( $value, $size );
+	if ( ! $url ) {
+		$url = get_the_post_thumbnail_url( $post_id, $size );
+	}
+	if ( ! $url ) {
+		$url = xva_core_mockup_exhibition_image( $post_id, $fallback, $size );
 	}
 	return $url ? $url : get_template_directory_uri() . '/assets/images/' . rawurlencode( $fallback );
 }
@@ -347,12 +539,6 @@ function xva_core_mockup_post_excerpt( $post_id, $fallback = '', $limit = 0 ) {
 }
 
 function xva_core_mockup_home() {
-	$slides = array(
-		array( 'file' => 'hero-01.webp', 'alt' => 'XVA Gallery exhibition installation', 'title' => 'Oblivion', 'date' => '28 July - 15 August 2026' ),
-		array( 'file' => 'hero-02.webp', 'alt' => 'Artwork installation at XVA Gallery', 'title' => 'After the Image', 'date' => '18 June - 16 July 2026' ),
-		array( 'file' => 'hero-03.webp', 'alt' => 'Contemporary artwork at XVA Gallery', 'title' => 'LOCAL', 'date' => '23 May - 18 June 2026' ),
-		array( 'file' => 'hero-04.webp', 'alt' => 'White exhibition at XVA Gallery', 'title' => 'White', 'date' => '25 April - 21 May 2026' ),
-	);
 	$exhibitions = array();
 	foreach ( array( 'after-the-image', 'local', 'white', 'fractal', 'the-truth', 'half-light' ) as $slug ) {
 		$post = get_page_by_path( $slug, OBJECT, 'xva_exhibition' );
@@ -362,19 +548,20 @@ function xva_core_mockup_home() {
 	}
 	$current_post    = xva_core_mockup_current_exhibition_post();
 	$current_id      = $current_post ? $current_post->ID : 0;
-	$current_title   = $current_post ? get_the_title( $current_id ) : 'Oblivion';
-	$current_image   = $current_post ? xva_core_mockup_exhibition_image( $current_id ) : get_template_directory_uri() . '/assets/images/oblivion.webp';
-	$current_start   = $current_post ? xva_core_mockup_date( 'start_date', $current_id, '28 July 2026' ) : '28 July 2026';
-	$current_end     = $current_post ? xva_core_mockup_date( 'end_date', $current_id, '15 August 2026' ) : '15 August 2026';
-	$current_venue   = $current_post ? xva_core_get_field( 'venue', $current_id, 'XVA Gallery' ) : 'XVA Gallery';
-	$current_excerpt = $current_post ? xva_core_mockup_post_excerpt( $current_id, 'Join us for Oblivion, our summer exhibition, running from 28 July to 15 August 2026.', 220 ) : 'Join us for Oblivion, our summer exhibition, running from 28 July to 15 August 2026.';
-	$current_url     = $current_post ? get_permalink( $current_id ) : home_url( '/exhibitions/oblivion/' );
+	$current_title   = $current_post ? get_the_title( $current_id ) : '';
+	$current_image   = $current_post ? xva_core_mockup_exhibition_poster( $current_id, 'oblivion.webp', 'large' ) : '';
+	$current_date    = $current_post ? xva_core_mockup_exhibition_date_range( $current_id, '' ) : '';
+	$current_venue   = $current_post ? xva_core_get_field( 'venue', $current_id, 'XVA Gallery' ) : '';
+	$current_excerpt = $current_post ? xva_core_mockup_post_excerpt( $current_id, '', 220 ) : '';
+	$current_url     = $current_post ? get_permalink( $current_id ) : '';
+	$slides          = $current_post ? xva_core_mockup_exhibition_hero_slides( $current_id, 'oblivion.webp' ) : array();
 	?>
-	<section class="xva-hero" data-xva-carousel aria-label="Featured XVA exhibitions">
+	<?php if ( $slides ) : ?>
+	<section class="xva-hero" data-xva-carousel="true" aria-label="Current XVA exhibition artwork carousel">
 		<div class="xva-hero-slides">
 			<?php foreach ( $slides as $index => $slide ) : ?>
-				<article class="xva-hero-slide<?php echo 0 === $index ? ' is-active' : ''; ?>" data-xva-slide aria-hidden="<?php echo 0 === $index ? 'false' : 'true'; ?>">
-					<?php echo xva_core_mockup_theme_image( $slide['file'], $slide['alt'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				<article class="xva-hero-slide<?php echo 0 === $index ? ' is-active' : ''; ?>" data-xva-slide data-xva-slide-source="<?php echo esc_attr( $slide['source'] ); ?>" aria-hidden="<?php echo 0 === $index ? 'false' : 'true'; ?>">
+					<img src="<?php echo esc_url( $slide['image'] ); ?>" alt="<?php echo esc_attr( $slide['alt'] ); ?>" loading="<?php echo 0 === $index ? 'eager' : 'lazy'; ?>"<?php echo 0 === $index ? ' fetchpriority="high"' : ''; ?> decoding="async">
 					<div class="xva-hero-caption">
 						<div class="xva-hero-caption__copy">
 							<span class="xva-kicker xva-kicker--light">Now on view / XVA Gallery</span>
@@ -390,6 +577,7 @@ function xva_core_mockup_home() {
 				</article>
 			<?php endforeach; ?>
 		</div>
+		<?php if ( count( $slides ) > 1 ) : ?>
 		<div class="xva-hero-controls">
 			<div class="xva-carousel-dots" aria-label="Choose featured exhibition">
 				<?php foreach ( $slides as $index => $slide ) : ?>
@@ -401,7 +589,9 @@ function xva_core_mockup_home() {
 				<button class="xva-carousel-button" type="button" data-xva-carousel-next aria-label="Next slide"><?php echo xva_core_inline_icon( 'arrow' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></button>
 			</div>
 		</div>
+		<?php endif; ?>
 	</section>
+	<?php endif; ?>
 
 	<section class="xva-section xva-home-programme" aria-labelledby="programme-title">
 		<div class="xva-shell">
@@ -412,6 +602,7 @@ function xva_core_mockup_home() {
 		</div>
 	</section>
 
+	<?php if ( $current_post ) : ?>
 	<section class="xva-section xva-section--dark" aria-labelledby="current-exhibition-title">
 		<div class="xva-shell">
 			<div class="xva-split-story">
@@ -419,13 +610,14 @@ function xva_core_mockup_home() {
 				<div class="xva-split-story__copy">
 					<span class="xva-kicker xva-kicker--light">Current exhibition / XVA Gallery</span>
 					<h2 id="current-exhibition-title" class="xva-serif"><?php echo esc_html( $current_title ); ?></h2>
-					<div class="xva-card__meta"><span><?php echo esc_html( $current_start . ' – ' . $current_end ); ?></span><span><?php echo esc_html( $current_venue ); ?></span></div>
+					<div class="xva-card__meta"><span><?php echo esc_html( $current_date ); ?></span><span><?php echo esc_html( $current_venue ); ?></span></div>
 					<p><?php echo esc_html( $current_excerpt ); ?></p>
 					<?php xva_core_mockup_button( 'View exhibition', $current_url, true ); ?>
 				</div>
 			</div>
 		</div>
 	</section>
+	<?php endif; ?>
 
 	<section class="xva-section xva-home-exhibitions" aria-labelledby="home-exhibitions-title">
 		<div class="xva-shell">
@@ -475,14 +667,14 @@ function xva_core_mockup_exhibition_grid( $posts ) {
 
 function xva_core_mockup_exhibition_card( $post ) {
 	$post_id = $post->ID;
-	$image   = xva_core_mockup_exhibition_image( $post_id );
-	$start   = xva_core_mockup_date( 'start_date', $post_id, 'On view' );
+	$image   = xva_core_mockup_exhibition_poster( $post_id, 'oblivion.webp', 'xva-card' );
+	$date    = xva_core_mockup_exhibition_start_date( $post_id, get_the_date( 'Y', $post_id ) );
 	$venue   = xva_core_get_field( 'venue', $post_id, 'XVA Gallery' );
 	?>
 	<article class="xva-card xva-exhibition-card">
 		<a href="<?php echo esc_url( get_permalink( $post_id ) ); ?>">
 			<div class="xva-card__media"><img src="<?php echo esc_url( $image ); ?>" alt="<?php echo esc_attr( get_the_title( $post_id ) ); ?>" loading="lazy" decoding="async"></div>
-			<div class="xva-card__meta"><span><?php echo esc_html( $start ); ?></span><span><?php echo esc_html( $venue ); ?></span></div>
+			<div class="xva-card__meta"><span><?php echo esc_html( $date ); ?></span><span><?php echo esc_html( $venue ); ?></span></div>
 			<h3><?php echo esc_html( get_the_title( $post_id ) ); ?></h3>
 			<p><?php echo esc_html( xva_core_mockup_post_excerpt( $post_id, 'Contemporary practices, material memory and shifting states.', 180 ) ); ?></p>
 			<span class="xva-card-link">View exhibition <?php echo xva_core_inline_icon( 'external' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
@@ -575,17 +767,22 @@ function xva_core_mockup_current_exhibition_post() {
 			),
 		)
 	);
-	if ( ! $current ) {
-		$current = get_posts(
-			array(
-				'post_type'      => 'xva_exhibition',
-				'post_status'    => 'publish',
-				'posts_per_page' => 1,
-				'orderby'        => 'date',
-				'order'          => 'DESC',
-			)
-		);
+	if ( $current ) {
+		return $current[0];
 	}
+
+	$current = get_posts(
+		array(
+			'post_type'      => 'xva_exhibition',
+			'post_status'    => 'publish',
+			'posts_per_page' => 1,
+			'orderby'        => 'date',
+			'order'          => 'DESC',
+			'meta_key'       => 'status_label',
+			'meta_value'     => 'current',
+		)
+	);
+
 	return $current ? $current[0] : null;
 }
 
@@ -595,6 +792,12 @@ function xva_core_mockup_exhibition_timestamp( $field, $post_id ) {
 		$value = isset( $value['date'] ) ? $value['date'] : ( isset( $value['value'] ) ? $value['value'] : '' );
 	}
 	$value = trim( (string) $value );
+	if ( ! $value ) {
+		$range = xva_core_mockup_exhibition_date_range( $post_id, '' );
+		if ( $range && preg_match_all( '/\d{1,2}\s+[A-Za-z]+\s+\d{4}/', $range, $matches ) ) {
+			$value = 'end_date' === $field && isset( $matches[0][1] ) ? $matches[0][1] : $matches[0][0];
+		}
+	}
 	if ( ! $value ) {
 		return 0;
 	}
@@ -620,9 +823,20 @@ function xva_core_mockup_exhibition_status( $post_id, $current_id = 0 ) {
 	if ( has_term( 'current', 'xva_exhibition_status', $post_id ) ) {
 		return 'current';
 	}
+	$status_label = strtolower( trim( (string) xva_core_get_field( 'status_label', $post_id, '' ) ) );
+	if ( 'current' === $status_label ) {
+		return 'current';
+	}
 
 	$start = xva_core_mockup_exhibition_timestamp( 'start_date', $post_id );
 	$end   = xva_core_mockup_exhibition_timestamp( 'end_date', $post_id );
+	$now   = current_time( 'timestamp' );
+	if ( $start && $start > $now ) {
+		return 'upcoming';
+	}
+	if ( 'upcoming' === $status_label && ! $start && ! $end ) {
+		return 'upcoming';
+	}
 	if ( ! $end ) {
 		$end = $start;
 	}
@@ -636,14 +850,14 @@ function xva_core_mockup_exhibition_status( $post_id, $current_id = 0 ) {
 function xva_core_mockup_exhibition_archive_card( $post, $current_id = 0 ) {
 	$post_id = $post->ID;
 	$status  = xva_core_mockup_exhibition_status( $post_id, $current_id );
-	$image   = xva_core_mockup_exhibition_image( $post_id );
+	$image   = xva_core_mockup_exhibition_poster( $post_id, 'oblivion.webp', 'xva-card' );
 	?>
 	<article class="xva-archive-card" data-xva-filter-card="<?php echo esc_attr( $status ); ?>">
 		<a href="<?php echo esc_url( get_permalink( $post_id ) ); ?>">
 			<div class="xva-archive-card__media"><img src="<?php echo esc_url( $image ); ?>" alt="<?php echo esc_attr( get_the_title( $post_id ) ); ?>" loading="lazy" decoding="async"></div>
 			<div class="xva-archive-card__meta">
 				<span><?php echo esc_html( xva_core_get_field( 'curator', $post_id, 'XVA Gallery' ) ); ?></span>
-				<span><?php echo esc_html( xva_core_mockup_date( 'start_date', $post_id, '2026' ) ); ?></span>
+				<span><?php echo esc_html( xva_core_mockup_exhibition_start_date( $post_id, get_the_date( 'Y', $post_id ) ) ); ?></span>
 				<time datetime="<?php echo esc_attr( get_the_date( 'c', $post_id ) ); ?>">Posted <?php echo esc_html( get_the_date( 'j F Y', $post_id ) ); ?></time>
 			</div>
 			<h3><?php echo esc_html( get_the_title( $post_id ) ); ?></h3>
@@ -677,10 +891,10 @@ function xva_core_mockup_exhibitions() {
 	</section>
 	<section class="xva-section xva-section--tight" data-xva-exhibition-current-view<?php echo 'current' === $filter ? '' : ' hidden'; ?>>
 		<div class="xva-shell">
-			<?php if ( $current_post ) : $image = xva_core_mockup_exhibition_image( $current_post->ID ); ?>
+			<?php if ( $current_post ) : $image = xva_core_mockup_exhibition_poster( $current_post->ID ); ?>
 			<div class="xva-current-exhibition">
 				<div class="xva-current-exhibition__media"><img src="<?php echo esc_url( $image ); ?>" alt="<?php echo esc_attr( get_the_title( $current_post->ID ) ); ?>" loading="lazy" decoding="async"></div>
-				<div class="xva-current-exhibition__copy"><span class="xva-kicker">Current exhibition</span><h2 class="xva-serif"><?php echo esc_html( get_the_title( $current_post->ID ) ); ?></h2><div class="xva-current-exhibition__details"><span><?php echo esc_html( xva_core_mockup_date( 'start_date', $current_post->ID, '28 July 2026' ) ); ?> – <?php echo esc_html( xva_core_mockup_date( 'end_date', $current_post->ID, '15 August 2026' ) ); ?></span><span><?php echo esc_html( xva_core_get_field( 'venue', $current_post->ID, 'XVA Gallery / Dubai' ) ); ?></span></div><p><?php echo esc_html( xva_core_mockup_post_excerpt( $current_post->ID, 'To forget is not only to lose. Oblivion is also where the mind makes room; clearing space for what matters now.' ) ); ?></p><?php xva_core_mockup_button( 'View exhibition', get_permalink( $current_post->ID ) ); ?></div>
+				<div class="xva-current-exhibition__copy"><span class="xva-kicker">Current exhibition</span><h2 class="xva-serif"><?php echo esc_html( get_the_title( $current_post->ID ) ); ?></h2><div class="xva-current-exhibition__details"><span><?php echo esc_html( xva_core_mockup_exhibition_date_range( $current_post->ID, '28 July 2026 – 15 August 2026' ) ); ?></span><span><?php echo esc_html( xva_core_get_field( 'venue', $current_post->ID, 'XVA Gallery / Dubai' ) ); ?></span></div><p><?php echo esc_html( xva_core_mockup_post_excerpt( $current_post->ID, 'To forget is not only to lose. Oblivion is also where the mind makes room; clearing space for what matters now.' ) ); ?></p><?php xva_core_mockup_button( 'View exhibition', get_permalink( $current_post->ID ) ); ?></div>
 			</div>
 			<?php endif; ?>
 		</div>
@@ -845,12 +1059,12 @@ add_shortcode( 'xva_mockup_single', 'xva_core_mockup_single_shortcode' );
 function xva_core_mockup_artist_single() {
 	$post_id       = get_the_ID();
 	$title         = get_the_title( $post_id );
-	$origin        = xva_core_get_field( 'origin', $post_id, '' );
+	$origin        = xva_core_mockup_artist_strip_bio_prefix( xva_core_get_field( 'origin', $post_id, '' ) );
 	$birth         = xva_core_get_field( 'birth_information', $post_id, '' );
-	$intro         = xva_core_get_field( 'intro', $post_id, 'Significantly influenced by Sufi ideologies, the work rests as serene and meditative in parallel to disturbing questions of division and social hierarchy.' );
+	$intro         = xva_core_mockup_artist_strip_bio_prefix( xva_core_get_field( 'intro', $post_id, 'Significantly influenced by Sufi ideologies, the work rests as serene and meditative in parallel to disturbing questions of division and social hierarchy.' ) );
 	$image         = xva_core_mockup_artist_image( $post_id );
-	$bio           = xva_core_mockup_field_html( 'biography', $post_id, '<p>' . esc_html( $intro ) . '</p><p>Source-derived copy is retained and presented here as a legible long-form reading experience.</p>' );
-	$statement     = xva_core_mockup_field_html( 'artist_statement', $post_id, '' );
+	$bio           = xva_core_mockup_artist_strip_bio_prefix( xva_core_mockup_field_html( 'biography', $post_id, '<p>' . esc_html( $intro ) . '</p><p>Source-derived copy is retained and presented here as a legible long-form reading experience.</p>' ) );
+	$statement     = xva_core_mockup_artist_strip_bio_prefix( xva_core_mockup_field_html( 'artist_statement', $post_id, '' ) );
 	$artist_sections = xva_core_mockup_artist_sections( $bio );
 	$statement_text  = trim( preg_replace( '/\s+/', ' ', wp_strip_all_tags( html_entity_decode( $statement, ENT_QUOTES, 'UTF-8' ) ) ) );
 	if ( $statement_text ) {
@@ -1041,9 +1255,10 @@ function xva_core_mockup_exhibition_single() {
 		$subtitle = implode( ', ', $participant_names );
 	}
 	$intro               = xva_core_get_field( 'intro', $post_id, 'Join us for Oblivion, our summer exhibition, running from 28 July to 15 August 2026.' );
-	$start_date          = xva_core_mockup_date( 'start_date', $post_id, '' );
+	$start_date          = xva_core_mockup_exhibition_date_range( $post_id, '' );
 	$description         = xva_core_mockup_exhibition_description_html( $post_id, '<p>' . esc_html( $intro ) . '</p>' );
-	$image               = xva_core_mockup_exhibition_image( $post_id );
+	$image               = xva_core_mockup_exhibition_poster( $post_id );
+	$gallery_items       = xva_core_mockup_exhibition_gallery_items( $post_id, 'large' );
 	$image_data          = xva_core_get_field( 'hero_image', $post_id, array() );
 	$image_alt           = is_array( $image_data ) && ! empty( $image_data['alt'] ) ? $image_data['alt'] : $title . ' exhibition';
 	$image_caption       = is_array( $image_data ) && ! empty( $image_data['caption'] ) ? $image_data['caption'] : '';
@@ -1083,6 +1298,19 @@ function xva_core_mockup_exhibition_single() {
 					<?php if ( $image_caption ) : ?><figcaption><?php echo esc_html( $image_caption ); ?></figcaption><?php endif; ?>
 				</figure>
 			</div>
+			<?php if ( $gallery_items ) : ?>
+			<section class="xva-exhibition-detail__gallery" aria-labelledby="xva-exhibition-gallery-title">
+				<div class="xva-section-header">
+					<span class="xva-kicker">Artwork / installation gallery</span>
+					<h2 id="xva-exhibition-gallery-title" class="xva-serif">The exhibition in view.</h2>
+				</div>
+				<div class="xva-artwork-gallery">
+					<?php foreach ( $gallery_items as $gallery_item ) : ?>
+						<figure><img src="<?php echo esc_url( $gallery_item['url'] ); ?>" alt="<?php echo esc_attr( $gallery_item['alt'] ); ?>" loading="lazy" decoding="async"></figure>
+					<?php endforeach; ?>
+				</div>
+			</section>
+			<?php endif; ?>
 		</div>
 	</section>
 	<?php

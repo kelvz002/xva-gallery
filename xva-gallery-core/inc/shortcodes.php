@@ -65,9 +65,10 @@ add_shortcode( 'xva_image', 'xva_core_image_shortcode' );
 
 function xva_core_gallery_shortcode( $atts ) {
 	$atts = shortcode_atts( array( 'field' => 'artwork_gallery', 'post_id' => get_the_ID() ), $atts, 'xva_gallery' );
-	$items = xva_core_get_field( $atts['field'], $atts['post_id'], array() );
+	$native_ids = 'artwork_gallery' === $atts['field'] && function_exists( 'xva_core_native_exhibition_gallery_ids' ) ? xva_core_native_exhibition_gallery_ids( $atts['post_id'] ) : null;
+	$items     = null !== $native_ids ? $native_ids : xva_core_get_field( $atts['field'], $atts['post_id'], array() );
 	if ( ! is_array( $items ) || ! $items ) {
-		return '<div class="xva-gallery-empty"><span class="xva-kicker">Artwork gallery</span><p>Connect the ACF Gallery field to populate this module.</p></div>';
+		return '<div class="xva-gallery-empty"><span class="xva-kicker">Artwork gallery</span><p>Choose artwork or installation photos from the native WordPress Media Library gallery on the exhibition edit screen.</p></div>';
 	}
 	$output = '<div class="xva-artwork-gallery">';
 	foreach ( $items as $item ) {
@@ -142,8 +143,8 @@ function xva_core_exhibition_grid_shortcode( $atts ) {
 	if ( $query->have_posts() ) :
 		?><div class="xva-exhibition-grid"><?php
 		while ( $query->have_posts() ) : $query->the_post();
-			$image = get_the_post_thumbnail_url( get_the_ID(), 'xva-card' );
-			?><article class="xva-card xva-exhibition-card"><a href="<?php the_permalink(); ?>"><div class="xva-card__media"><?php if ( $image ) : ?><img src="<?php echo esc_url( $image ); ?>" alt="<?php echo esc_attr( get_the_title() ); ?>" loading="lazy" decoding="async"><?php endif; ?></div><div class="xva-card__meta"><span><?php echo esc_html( xva_core_get_field( 'start_date', get_the_ID(), 'On view' ) ); ?></span><span><?php echo esc_html( xva_core_get_field( 'venue', get_the_ID(), 'XVA Gallery' ) ); ?></span></div><h3><?php the_title(); ?></h3><p><?php echo esc_html( xva_core_mockup_post_excerpt( get_the_ID(), '', 180 ) ); ?></p><span class="xva-card-link">View exhibition <?php echo xva_core_inline_icon( 'external' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span></a></article><?php
+			$image = xva_core_mockup_exhibition_poster( get_the_ID(), 'oblivion.webp', 'xva-card' );
+			?><article class="xva-card xva-exhibition-card"><a href="<?php the_permalink(); ?>"><div class="xva-card__media"><?php if ( $image ) : ?><img src="<?php echo esc_url( $image ); ?>" alt="<?php echo esc_attr( get_the_title() ); ?>" loading="lazy" decoding="async"><?php endif; ?></div><div class="xva-card__meta"><span><?php echo esc_html( xva_core_mockup_exhibition_start_date( get_the_ID(), get_the_date( 'Y', get_the_ID() ) ) ); ?></span><span><?php echo esc_html( xva_core_get_field( 'venue', get_the_ID(), 'XVA Gallery' ) ); ?></span></div><h3><?php the_title(); ?></h3><p><?php echo esc_html( xva_core_mockup_post_excerpt( get_the_ID(), '', 180 ) ); ?></p><span class="xva-card-link">View exhibition <?php echo xva_core_inline_icon( 'external' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span></a></article><?php
 		endwhile;
 		?></div><?php
 	endif;

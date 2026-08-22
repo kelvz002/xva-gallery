@@ -1,0 +1,6 @@
+.xva-native-gallery__actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.xva-native-gallery__list { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; max-width: 920px; margin: 18px 0 0; padding: 0; list-style: none; }
+.xva-native-gallery__item { position: relative; min-height: 120px; padding: 8px; border: 1px solid #dcdcde; background: #f6f7f7; }
+.xva-native-gallery__image { display: block; width: 100%; height: 120px; object-fit: cover; }
+.xva-native-gallery__remove { display: block; margin-top: 7px; }
+.xva-native-gallery__empty { padding: 18px; border: 1px dashed #c3c4c7; color: #646970; }

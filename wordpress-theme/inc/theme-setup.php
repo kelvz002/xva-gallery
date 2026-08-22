@@ -31,8 +31,8 @@ add_action( 'after_setup_theme', 'xva_gallery_setup' );
 
 function xva_gallery_enqueue_assets() {
 	wp_enqueue_style( 'xva-gallery-style', get_stylesheet_uri(), array(), XVA_GALLERY_VERSION );
-	wp_enqueue_style( 'xva-gallery-prata', 'https://fonts.googleapis.com/css2?family=Prata&display=swap', array(), null );
-	wp_enqueue_style( 'xva-gallery-visual-system', XVA_GALLERY_URI . '/assets/css/xva.css', array( 'xva-gallery-style' ), XVA_GALLERY_VERSION );
+	wp_enqueue_style( 'xva-gallery-dm-sans', 'https://fonts.googleapis.com/css2?display=swap&family=DM+Sans', array(), null );
+	wp_enqueue_style( 'xva-gallery-visual-system', XVA_GALLERY_URI . '/assets/css/xva.css', array( 'xva-gallery-style', 'xva-gallery-dm-sans' ), XVA_GALLERY_VERSION );
 	wp_enqueue_script( 'xva-gallery-interactions', XVA_GALLERY_URI . '/assets/js/xva.js', array(), XVA_GALLERY_VERSION, true );
 	wp_localize_script(
 		'xva-gallery-interactions',

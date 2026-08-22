@@ -5,6 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $is_home = is_front_page();
+$has_gtranslate = function_exists( 'shortcode_exists' ) && shortcode_exists( 'gt-link' );
 ?><!doctype html>
 <html <?php language_attributes(); ?>>
 <head>
@@ -24,7 +25,11 @@ $is_home = is_front_page();
 		</a>
 		<div class="xva-header-meta">
 			<nav class="xva-language-switch" aria-label="<?php esc_attr_e( 'Language', 'xva-gallery' ); ?>">
-				<a href="#" data-xva-language="en" aria-current="true">EN</a><span aria-hidden="true">|</span><a href="#" data-xva-language="ar" aria-current="false">AR</a>
+				<?php if ( $has_gtranslate ) : ?>
+					<span class="xva-language-option" data-xva-language="en"><?php echo do_shortcode( '[gt-link lang="en" label="EN" widget_look="lang_codes"]' ); ?></span><span aria-hidden="true">|</span><span class="xva-language-option" data-xva-language="ar"><?php echo do_shortcode( '[gt-link lang="ar" label="AR" widget_look="lang_codes"]' ); ?></span>
+				<?php else : ?>
+					<a href="<?php echo esc_url( add_query_arg( 'lang', 'en' ) ); ?>" data-xva-language="en" aria-current="true">EN</a><span aria-hidden="true">|</span><a href="<?php echo esc_url( add_query_arg( 'lang', 'ar' ) ); ?>" data-xva-language="ar" aria-current="false">AR</a>
+				<?php endif; ?>
 			</nav>
 			<a class="xva-shop-link" href="<?php echo esc_url( 'http://xvashop.com/' ); ?>" aria-label="<?php esc_attr_e( 'Shop', 'xva-gallery' ); ?>"><?php echo xva_gallery_icon( 'bag' ); ?></a>
 			<button class="xva-menu-toggle" type="button" aria-expanded="false" aria-controls="xva-menu" data-xva-menu-toggle><span><?php esc_html_e( 'Menu', 'xva-gallery' ); ?></span><?php echo xva_gallery_icon( 'menu' ); ?></button>

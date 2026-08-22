@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'XVA_GALLERY_VERSION', '1.1.38' );
+define( 'XVA_GALLERY_VERSION', '1.1.45' );
 define( 'XVA_GALLERY_DIR', get_template_directory() );
 define( 'XVA_GALLERY_URI', get_template_directory_uri() );
 

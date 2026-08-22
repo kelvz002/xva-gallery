@@ -66,8 +66,10 @@
 
   document.querySelectorAll('[data-xva-language]').forEach(function (link) {
     link.addEventListener('click', function (event) {
-      event.preventDefault();
       applyLanguage(link.getAttribute('data-xva-language'), true);
+      var targetLink = event.target && event.target.closest ? event.target.closest('a') : null;
+      var href = link.getAttribute('href');
+      if (!targetLink && (!href || href === '#')) event.preventDefault();
     });
   });
 
@@ -301,7 +303,11 @@
     function show(index) {
       if (!slides.length) return;
       current = (index + slides.length) % slides.length;
-      slides.forEach(function (slide, i) { slide.classList.toggle('is-active', i === current); });
+      slides.forEach(function (slide, i) {
+        var active = i === current;
+        slide.classList.toggle('is-active', active);
+        slide.setAttribute('aria-hidden', active ? 'false' : 'true');
+      });
       dots.forEach(function (dot, i) { dot.classList.toggle('is-active', i === current); dot.setAttribute('aria-current', i === current ? 'true' : 'false'); });
     }
     function restart() { window.clearInterval(timer); timer = window.setInterval(function () { show(current + 1); }, 7000); }

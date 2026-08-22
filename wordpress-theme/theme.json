@@ -20,8 +20,8 @@
     },
     "typography": {
       "fontFamilies": [
-        {"fontFamily":"Arial, Helvetica, sans-serif","slug":"xva-sans","name":"XVA Sans"},
-        {"fontFamily":"Georgia, 'Times New Roman', serif","slug":"xva-serif","name":"XVA Serif"}
+        {"fontFamily":"'DM Sans', sans-serif","slug":"xva-sans","name":"DM Sans"},
+        {"fontFamily":"'DM Sans', sans-serif","slug":"xva-serif","name":"DM Sans Display"}
       ]
     }
   },
