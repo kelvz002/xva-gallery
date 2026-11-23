@@ -13,9 +13,7 @@ if ( have_posts() ) :
 	while ( have_posts() ) :
 		the_post();
 		if ( function_exists( 'xva_core_mockup_exhibition_single' ) ) :
-			xva_core_mockup_exhibition_single();
-		else :
-			the_content();
+			xva_core_mockup_exhibition_single( get_the_ID() );
 		endif;
 	endwhile;
 endif;

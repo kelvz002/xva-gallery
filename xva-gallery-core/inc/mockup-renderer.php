@@ -1230,8 +1230,8 @@ function xva_core_mockup_artist_single() {
 	<?php
 }
 
-function xva_core_mockup_exhibition_single() {
-	$post_id             = get_the_ID();
+function xva_core_mockup_exhibition_single( $post_id = 0 ) {
+	$post_id             = $post_id ?: get_the_ID();
 	$title               = get_the_title( $post_id );
 	$current_post        = xva_core_mockup_current_exhibition_post();
 	$current_id          = $current_post ? (int) $current_post->ID : 0;
@@ -1254,9 +1254,11 @@ function xva_core_mockup_exhibition_single() {
 	if ( ! $subtitle && $participant_names ) {
 		$subtitle = implode( ', ', $participant_names );
 	}
-	$intro               = xva_core_get_field( 'intro', $post_id, 'Join us for Oblivion, our summer exhibition, running from 28 July to 15 August 2026.' );
+	$intro               = xva_core_mockup_field_html( 'intro', $post_id );
+	$pull_quote          = trim( (string) xva_core_get_field( 'pull_quote', $post_id, '' ) );
+	$about_artist        = xva_core_mockup_field_html( 'about_artist', $post_id );
 	$start_date          = xva_core_mockup_exhibition_date_range( $post_id, '' );
-	$description         = xva_core_mockup_exhibition_description_html( $post_id, '<p>' . esc_html( $intro ) . '</p>' );
+	$description         = xva_core_mockup_exhibition_description_html( $post_id );
 	$image               = xva_core_mockup_exhibition_poster( $post_id );
 	$gallery_items       = xva_core_mockup_exhibition_gallery_items( $post_id, 'large' );
 	$image_data          = xva_core_get_field( 'hero_image', $post_id, array() );
@@ -1286,7 +1288,15 @@ function xva_core_mockup_exhibition_single() {
 			</header>
 			<div class="xva-exhibition-detail__content">
 				<div class="xva-exhibition-detail__prose">
+					<?php if ( $pull_quote ) : ?><blockquote><p><?php echo esc_html( $pull_quote ); ?></p></blockquote><?php endif; ?>
 					<?php echo $description; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					<?php if ( $intro ) : ?><p><?php echo $intro; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p><?php endif; ?>
+					<?php if ( $about_artist ) : ?>
+						<section class="xva-exhibition-detail__artist">
+							<h2>About the Artist</h2>
+							<?php echo $about_artist; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						</section>
+					<?php endif; ?>
 					<div class="xva-exhibition-detail__actions">
 						<span>Share</span>
 						<?php if ( $press_url ) : ?><a href="<?php echo esc_url( $press_url ); ?>" target="_blank" rel="noopener">View press release <?php echo xva_core_inline_icon( 'external' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></a><?php endif; ?>
